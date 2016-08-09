@@ -298,7 +298,7 @@ class Show_Profile(BaseHandler):
         if profile is None:
             logging.error('Show_Profile profile: %s' % profile)
             params = dict(username = logged_username, default_selected_type = 'empresa')
-            self.render('profile_form.html', params = params, countries = countries, profile_types = profile_types)
+            self.render('profile_form.html', params = params, countries = countries, profile_types = profile_types, btn_send = 'Save')
         else:
             self.render('profile_form_edit.html', profile = profile, user = u, countries = countries, profile_types = profile_types)
             
@@ -317,7 +317,7 @@ class Modify_Profile(BaseHandler):
 
         params = dict(username = profile.user.name, name = profile.name, email = profile.email, phone = profile.phone, profile_type = profile.profile_type, street_address = profile.street_address, address_line_2 = profile.address_line_2, city = profile.city, region = profile.region, zip_code = profile.zip_code, country = profile.country, web = profile.web)
 
-        self.render('profile_form.html', params = params, countries = countries, profile_types = profile_types)
+        self.render('profile_form.html', params = params, countries = countries, profile_types = profile_types, btn_send = 'Modify')
 
 class Save_Profile(BaseHandler):
 
@@ -356,7 +356,7 @@ class Save_Profile(BaseHandler):
 
         if have_error:
             logging.error('params:%s' % params)
-            self.render('profile_form.html', params = params, countries = countries, profile_types = profile_types)
+            self.render('profile_form.html', params = params, countries = countries, profile_types = profile_types, btn_send = 'Modify')
         else:
             self.done()
 
