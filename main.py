@@ -34,7 +34,7 @@ from webapp2_extras import sessions
 from models.User import User
 from models.Profile import Profile
 from models.Offer import Offer
-from utils.utils import make_secure_val, check_secure_val, valid_username, valid_name, valid_email, categories, countries, profile_types
+from utils.utils import make_secure_val, check_secure_val, valid_username, valid_password, valid_name, valid_email, categories, countries, profile_types
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = True)
@@ -257,28 +257,31 @@ class Welcome(BaseHandler):
         logging.error('DB Query')
         logged_username = user and user.name
 
-        offer_added = self.request.get('offer_added')
-
-        u = loged_user(logged_username) #User.by_name(logged_username)
-
-        profile = loged_profile(logged_username) 
-
-        logging.error('profile en welcome: %s' % profile)
-
-        if  valid_username(logged_username):
-            if profile:
-
-                if offer_added:
-                    self.render('welcome.html', user = u, profile = profile, categories = categories, offer_added = True)
-                else:
-                    self.render('welcome.html', user = u, profile = profile, categories = categories)
-            else:
-                self.render('welcome.html', user = u)
-        elif logged_username == '' or logged_username == None:
+        if logged_username == '' or logged_username == None:
             self.redirect('/ioffer/login')
         else:
-            error_username = 'There was an error with user %s' % logged_username
-            self.render('welcome.html', user = u, error_username = error_username)
+
+            offer_added = self.request.get('offer_added')
+
+            u = loged_user(logged_username) #User.by_name(logged_username)
+
+            profile = loged_profile(logged_username) 
+
+            logging.error('profile en welcome: %s' % profile)
+
+            if  valid_username(logged_username):
+                if profile:
+
+                    if offer_added:
+                        self.render('welcome.html', user = u, profile = profile, categories = categories, offer_added = True)
+                    else:
+                        self.render('welcome.html', user = u, profile = profile, categories = categories)
+                else:
+                    self.render('welcome.html', user = u)
+            
+            else:
+                error_username = 'There was an error with user %s' % logged_username
+                self.render('welcome.html', user = u, error_username = error_username)
             
 class Init(BaseHandler):
     def get(self):

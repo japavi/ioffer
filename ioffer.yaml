@@ -1,9 +1,9 @@
-application: ioffer
+application: ioffer-ioffer
 version: 1
 runtime: python27
 api_version: 1
 threadsafe: yes
-# module: default
+module: default
 
 handlers:
 - url: /static
