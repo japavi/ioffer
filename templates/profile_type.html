@@ -1,0 +1,3 @@
+{% for type in profile_types %}
+    <input type="radio" id="profile_type" name="profile_type" value="{{ type }}" {% if params['profile_type'] == type or params['default_selected_type'] == type %} checked {% endif %} > {{ profile_types[type] }}
+{% endfor %}

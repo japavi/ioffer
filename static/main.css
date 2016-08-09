@@ -1,0 +1,158 @@
+html {
+  overflow-y: scroll; /*to prevent scrollbar from repositioning web page*/
+}
+
+body {
+    position: relative;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    background: white;
+
+    width: 800px;
+    margin: 0 auto;
+    padding: 10px;
+    color: #333;
+}
+
+.wrapper {
+  background: #0B4C5F;
+  margin: auto;
+  padding: 1em;
+  width: 100%;
+  color: white;
+}
+h1 {
+  text-align: center;
+}
+ul.tabs {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+ul.tabs li {
+  border: gray solid 1px;
+  border-bottom: none;
+  float: left;
+  margin: 0 .25em 0 0;
+  padding: .25em .5em;
+}
+ul.tabs li a {
+  color: gray;
+  font-weight: bold;
+  text-decoration: none;
+}
+ul.tabs li.active {
+  background: gray;
+}
+ul.tabs li.active a {
+  color: white;
+}
+
+ul.tabs li:hover{
+  color: white;
+  
+  background: #91DAF2;
+}
+
+ul.tabs li a:hover{
+  color: white;
+  cursor: pointer;
+  
+}
+
+
+.clr {
+  clear: both;
+}
+.article_tabs {
+  border-top: gray solid 1px;
+  padding: 0 1em;
+}
+
+.login-area {
+    font-size: 13px;
+    color: gray;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+}
+
+.footer-area {
+    font-size: 13px;
+    color: gray;
+    position: absolute;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.login-link {
+    color: gray;
+    text-decoration: none;
+}
+
+.login-link:visited {
+    color: gray;
+}
+
+.login-link:hover {
+    text-decoration: underline;
+}
+
+h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.error {
+    color: red;
+}
+
+label {
+  display: block;
+  font-size: 20px;
+}
+
+label + label {
+    margin-top: 20px;
+}
+
+
+
+input[type=text] {
+    width: 500px;
+    font-size: 14px;
+    padding: 2px;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+input[type=button] {
+    font-size: 13px;
+    padding: 2px;
+    font-family: Helvetica, Arial, sans-serif;
+}
+
+.buttonHolder{ text-align: center; }
+
+textarea {
+  width: 500px;
+  height: 150px;
+  font-size: 17px;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+input[type=submit] {
+  font-size: 14px;
+}
+
+.main-title {
+    display: block;
+    color: #222;
+    font-size: 40px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 30px;
+    text-decoration: none;
+}
+
+

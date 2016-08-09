@@ -1,0 +1,130 @@
+<script>
+
+$(function(){
+      $( document ).ready(function() {
+        {% if offer_added %} /*Viene de agregar offer asi que muestra la tercera pestania*/
+        alert('vengooooo')
+          $('li.li-top a:last').addClass('active');
+          $('.block article').hide();
+          $('.block article:last').show();
+          $('ul.tabs li').removeClass('active');
+          $('ul.tabs li:last').addClass('active')
+            $('.block article').hide();
+            var activeTab = $('ul.tabs li:last').find('a').attr('href');
+            $(activeTab).show();
+            var dataString = 'username='+ '{{ user.name }}';  
+            alert(dataString)
+               $.ajax({
+                type: "POST",
+                  url: "/ioffer/offers_user_display",
+                  data: dataString, 
+                  success: function(data) {
+                      $('#divtab3').html(data);
+                  },
+                  error: function() {
+                      $('#divtab3').html('There was an error');
+                  }
+               });
+               //changeUrlParam ('offer_added','');
+        
+                 
+              {% endif %}
+            });
+      })
+
+</script>
+{% for offer in offers_user %}
+    <table>
+    <tr>
+          <td class="label">
+            Title:
+          </td>
+          <td class="label">
+            {{offer.offer_tittle}}
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">
+            Category:
+          </td>
+          <td class="label">
+            {{ categories[offer.offer_category] }}
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">
+            Profile Name:
+          </td>
+          <td class="label">
+            {{offer.profile.name}}
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">
+            Date Created:
+          </td>
+          <td class="label">
+            {{offer.offer_created.strftime('%Y-%m-%d %H:%M:%S')}}
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">
+            Date Last Modification:
+          </td>
+          <td class="label">
+            {{offer.offer_last_modified.strftime('%Y-%m-%d %H:%M:%S')}}
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">
+            Offer Description:
+          </td>
+          <td class="label">
+            {{offer.offer_desc}}
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">
+            Starting Date:
+          </td>
+          <td class="label">
+            {{offer.offer_start_date}}
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">
+            Ending Date :
+          </td>
+          <td class="label">
+            {{offer.offer_end_date}}
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">
+            Upload Image:
+          </td>
+          <td class="label">
+           {{offer.image_offer}}
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">
+            Conditions:
+          </td>
+          <td class="label">
+           {{offer.offer_conditions}}
+          </td>
+        </tr>
+    </table>
+<hr>
+{% endfor %}
+

@@ -1,0 +1,136 @@
+<script>
+  if (datefield.type!="date"){ //if browser doesn't support input type="date", initialize date picker widget:
+    jQuery(function($){ //on document.ready
+        $('#offer_start_date').datepicker();
+        $('#offer_end_date').datepicker();
+    })
+  }
+
+
+$(function(){
+            $('#btn_save_offer').click(function(event) {
+                
+               var dataString = 'username='+ $('#username').val() + '&name=' + $('#name').val() + '&offer_tittle=' + $('#offer_tittle').val() + '&offer_category=' + $('#offer_category').val() + '&offer_desc=' + $('#offer_desc').val()
+               + '&offer_start_date=' + $('#offer_start_date').val() + '&offer_end_date=' + $('#offer_end_date').val() + '&image_offer=' + $('#image_offer').val() 
+               + '&offer_conditions=' + $('#offer_conditions').val();  
+               alert(dataString)
+               $.ajax({
+                type: "POST",
+                url: "/ioffer/add_offer",
+                data: dataString, 
+                success: function(data) {
+                    $('#divtab3').html(data);
+                },
+                error: function() {
+                    $('#divtab3').html('There was an error');
+                }
+               });
+            });
+        })
+
+
+</script>
+
+<form id="offer_form"><!-- method='post' action="/ioffer/add_offer"> -->
+    <table>
+        <tr>
+          <td class="label">
+            Username:
+          </td>
+          <td class="label">
+            {{ user.name }}
+            <input type="hidden" id="username" name="username" value="{{ user.name }}">
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">
+            Name:
+          </td>
+          <td>
+            {{ profile.name }}
+            <input type="hidden" id="name" name="name" value="{{ profile.name }}">
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">
+            Title:
+          </td>
+          <td>
+            <input type="text" id="offer_tittle" name="offer_tittle" value="{{ offer_tittle }}">
+            <table>
+                <tr>
+                    <td class="error">
+                        {{ error_offer_tittle }}
+                    </td>
+                </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">
+            Category:
+          </td>
+          <td>
+                {% include "categories.html" %}
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">
+            Offer Description:
+          </td>
+          <td>
+            <textarea cols="3" id="offer_desc" name="offer_desc" >{{ offer_desc }}</textarea>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">
+            Starting Date:
+          </td>
+          <td>
+            <input type="date" id="offer_start_date" name="offer_start_date" value="{{ offer_start_date }}">
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">
+            Ending Date :
+          </td>
+          <td>
+            <input type="date" id="offer_end_date" name="offer_end_date" value="{{ offer_end_date }}">
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">
+            Upload Image:
+          </td>
+          <td>
+            <input type="text" id="image_offer" name="image_offer" value="{{ image_offer }}">
+          </td>
+        </tr>
+
+        <tr>
+          <td class="label">
+            Conditions:
+          </td>
+          <td>
+            <input type="text" id="offer_conditions" name="offer_conditions" value="{{ offer_conditions }}">
+          </td>
+        </tr>
+
+        
+
+    </table>
+
+  <div class="error">
+    {{error}}
+  </div>
+  <div class="buttonHolder">
+    <input type="button" id="btn_save_offer" value="Save Offer">
+  </div>
+</form>

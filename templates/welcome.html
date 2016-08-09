@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block content %}
+	<header>
+		<h2>Welcome {{ user.name }}!</h2>
+	</header>
+	<article>
+		<table>
+			<tr>
+				<td class="error">
+					{{error_username}}
+				</td>
+			</tr>
+		</table>
+		<table>
+			<tr>
+				<td class="error">
+					{{error_name}}
+				</td>
+			</tr>
+		</table>
+	</article>
+	
+	<script>
+
+		
+
+		$(function(){
+			$('li.li-top-1').click(function(event) {
+             var dataString = 'user='+ '{{ user.name }}';  
+             $.ajax({
+                type: "POST",
+                url: "/ioffer/show_profile",
+                data:  dataString, 
+                success: function(data) {
+                    $('#divtab1').html(data);
+                },
+                error: function() {
+                    $('#divtab1').html('There was an error');
+                }
+             });
+          });
+    	})
+
+    	$(function(){
+			$('li.li-top-2').click(function(event) {
+             var dataString = 'user='+ '{{ user.name }}';  
+             $.ajax({
+                type: "POST",
+                url: "/ioffer/show_add_offer",
+                data:  dataString, 
+                success: function(data) {
+                    $('#divtab2').html(data);
+                },
+                error: function() {
+                    $('#divtab2').html('There was an error');
+                }
+             });
+          });
+    	})
+
+		$(function(){
+	        $('li.li-top-3').click(function(event) {
+	           var dataString = 'username='+ '{{ user.name }}';  
+	           $.ajax({
+	           	type: "POST",
+                url: "/ioffer/offers_user_display",
+                data: dataString, 
+                success: function(data) {
+                    $('#divtab3').html(data);
+                },
+                error: function() {
+                    $('#divtab3').html('There was an error');
+                }
+	           });
+	        });
+		})
+
+	</script>
+
+	<section class="wrapper">
+	  <h1>Fill in your profile to start publishing offers</h1>
+	  <ul class="tabs">
+	  	<li class="li-top-0"><a href="#tab0">Home</a></li>
+	    <li class="li-top-1"><a href="#tab1">Profile</a></li>
+	    <li class="li-top-2"><a class="tablabel" href="#tab2">Add Offer</a></li>
+	    <li class="li-top-3"><a class="tablabel" href="#tab3">Published Offers</a></li>
+	  </ul>
+	  <div class="clr"></div>
+	  <section class="block">
+	  	<article id="tab0" class="article_tabs">
+	      <p id="divtab0">
+	      	Welcome to this page bla bla bla....
+	      </p>
+	    </article>
+	    <article id="tab1" class="article_tabs">
+	      <p id="divtab1">
+	      	
+	      </p>
+	    </article>
+	    <article id="tab2" class="article_tabs">
+	      <p id="divtab2">
+	      		
+	      </p>
+	    </article>
+	    <article id="tab3" class="article_tabs">
+	      <p id="divtab3">
+	      		
+	      </p>
+	    </article>
+	  </section>
+	</section>
+	
+{% endblock %}

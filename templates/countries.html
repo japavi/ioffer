@@ -1,0 +1,5 @@
+<select id="countries" name="countries">
+{% for country in countries %}
+    <option value="{{ country }}" {% if params['country'] == country %} selected {% endif %}>{{ countries[country] }}</option>
+{% endfor %}
+</select>
