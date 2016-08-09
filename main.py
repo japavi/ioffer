@@ -34,7 +34,7 @@ from webapp2_extras import sessions
 from models.User import User
 from models.Profile import Profile
 from models.Offer import Offer
-from utils.utils import make_secure_val, check_secure_val, valid_username, valid_password, valid_name, valid_email, categories, countries, profile_types
+from utils.utils import make_secure_val, check_secure_val, valid_username, valid_password, valid_name, valid_email, categories, countries, profile_types, COOKIE_EXP
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
 jinja_env = jinja2.Environment(loader = jinja2.FileSystemLoader(template_dir), autoescape = True)

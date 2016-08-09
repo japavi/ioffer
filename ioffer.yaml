@@ -11,6 +11,11 @@ handlers:
 
 - url: .*
   script: main.app
+  secure: always
+
+- url: /templates  
+  upload: /templates/static_head.html
+  static_files: /templates/static_head.html
 
 libraries:
 - name: webapp2

@@ -13,7 +13,7 @@ $(function(){
                var dataString = 'username='+ $('#username').val() + '&name=' + $('#name').val() + '&offer_tittle=' + $('#offer_tittle').val() + '&offer_category=' + $('#offer_category').val() + '&offer_desc=' + $('#offer_desc').val()
                + '&offer_start_date=' + $('#offer_start_date').val() + '&offer_end_date=' + $('#offer_end_date').val() + '&image_offer=' + $('#image_offer').val() 
                + '&offer_conditions=' + $('#offer_conditions').val();  
-               alert(dataString)
+               /*alert(dataString)*/
                $.ajax({
                 type: "POST",
                 url: "/ioffer/add_offer",

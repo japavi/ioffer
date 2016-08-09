@@ -35,7 +35,7 @@
             Created:
           </td>
           <td class="label">
-            {{ profile.profile_created }}
+            {{ profile.profile_created.strftime('%Y-%m-%d %H:%M:%S') }}
           </td>
 
         </tr>
@@ -45,7 +45,7 @@
             Last Modified:
           </td>
           <td class="label">
-            {{profile.profile_last_modified}}
+            {{ profile.profile_last_modified.strftime('%Y-%m-%d %H:%M:%S') }}
           </td>
 
         </tr>
@@ -55,7 +55,7 @@
             Email:
           </td>
           <td class="label">
-            {{profile.email}}
+            {{ profile.email }}
           </td>
         </tr>
 
@@ -64,7 +64,7 @@
             Phone:
           </td>
           <td class="label">
-            {{profile.phone}}
+            {{ profile.phone }}
           </td>
         </tr>
 
@@ -73,7 +73,7 @@
             Street Address:
           </td>
           <td class="label">
-            {{profile.street_address}}
+            {{ profile.street_address }}
           </td>
         </tr>
 
@@ -82,7 +82,7 @@
             Address Line 2:
           </td>
           <td class="label">
-            {{profile.address_line_2}}
+            {{ profile.address_line_2 }}
           </td>
         </tr>
 
@@ -91,7 +91,7 @@
             City:
           </td>
           <td class="label">
-            {{profile.city}}
+            {{ profile.city }}
           </td>
         </tr>
 
@@ -100,7 +100,7 @@
             State / Province / County / Region:
           </td>
           <td class="label">
-            {{profile.region}}
+            {{ profile.region }}
           </td>
         </tr>
 
@@ -109,7 +109,7 @@
             Postal / Zip Code:
           </td>
           <td class="label">
-            {{profile.zip_code}}
+            {{ profile.zip_code }}
           </td>
         </tr>
 
@@ -127,7 +127,7 @@
             Web:
           </td>
           <td class="label">
-            {{profile.web}}
+            {{ profile.web }}
           </td>
         </tr>
 
