@@ -1,3 +1,42 @@
+
+/*#header #main-navigation{background-color:rgba(0,0,0,0.1);font-size:12px}
+#header #main-navigation .has-dropdown{margin:0 23px 0 0}
+#header #main-navigation .has-dropdown.omega{margin-right:0}
+#header #main-navigation .has-dropdown>a,
+#header #main-navigation .has-dropdown>
+span{padding:11px 6px;letter-spacing:1px;text-transform:uppercase}
+#header #header-holidays{position:relative}
+#header #header-holidays a{float:right;display:block;transition:background-color .3s;width:105px}
+#header #header-holidays a:first-of-type{margin-left:10px}
+#header #header-holidays a img{position:relative;top:7px}
+#header #header-holidays a:hover{background-color:rgba(0,0,0,0.1)}
+
+.container_12{margin-left:auto;margin-right:auto;width:960px}
+
+.container_12:after,
+.container_12
+
+.grid_9{width:700px}
+
+.icon-angle-down:before{content:"\f107"}
+
+.dolphin{padding-left:20px}
+ol.dolphin li{list-style:decimal}
+.dolphin.has-dropdown{border-top:2px solid rgba(0,0,0,0);display:inline-block;margin-left:5px;position:relative;z-index:1}
+.dolphin.has-dropdown>span,.dolphin.has-dropdown>a{color:white;display:block;padding:0 12px;position:relative;z-index:11}
+.dolphin.has-dropdown a{display:inline-block}
+.dolphin.has-dropdown a:hover{background-color:#f7f4f0;text-decoration:none}
+.dolphin.has-dropdown:hover{border-top:2px solid #00afb4}
+.dolphin.has-dropdown:hover>span{background-color:#0B4C5F;color:#28394c}
+.dolphin.has-dropdown:hover>a{background-color:white;color:#00afb4}
+.dolphin.has-dropdown:hover .dropdown{display:block}
+.dolphin.has-dropdown .dropdown{box-shadow:0 3px 5px rgba(0,0,0,0.4);display:none;position:absolute;padding:0;left:0;text-align:left;background:#0B4C5F;padding:5px;width:180px;z-index:10}
+.dolphin.has-dropdown .dropdown li{line-height:1.8em;list-style:none;margin-bottom:5px}
+.dolphin.has-dropdown .dropdown li a{display:block;padding:2px 6px}
+.dolphin.has-dropdown .dropdown hr{border-top:1px solid #eaecec;height:1px;margin:10px 0}*/
+/*.dolphin.tabs{background-color:white}
+.dolphin.tabs .tab{color:#00afb4;cursor:pointer;display:inline-block;font-size:14px;height:40px;line-height:40px;margin-bottom:0;padding:0 10px;transition:background-color .5s}.dolphin.tabs .tab.hidden{display:none}.dolphin.tabs .tab.title{color:#28394c;font-weight:bold}.dolphin.tabs .tab.title:hover{background-color:white;border:0;cursor:default}.dolphin.tabs .tab.selected{background:#f7f4f0;color:#28394c;cursor:default}.dolphin.tabs .tab.has-dropdown{padding:0}.dolphin.tabs .tab:hover{background-color:#f7f4f0}.dolphin.tabs.vertical{border-bottom:0;padding:5px 0}.dolphin.tabs.vertical .tab{display:block;margin-right:0;text-align:left}.dolphin.tabs.dark{background-color:#eee8df}.dolphin.tabs.dark .tab.selected{background-color:white}.dolphin.tabs.dark .tab.selected:hover{background-color:white}.dolphin.tabs.dark .tab:hover{background-color:#e5dccf}.dolphin.tabs.detached.tabs{border-collapse:separate;-webkit-box-shadow:0 0 3px #cfd3d4;-moz-box-shadow:0 0 3px #cfd3d4;box-shadow:0 0 3px #cfd3d4}.dolphin.tabs.detached .tab.selected{background-color:#eee8df}*/
+
 html {
   overflow-y: scroll; /*to prevent scrollbar from repositioning web page*/
 }
@@ -7,18 +46,18 @@ body {
     font-family: Helvetica, Arial, sans-serif;
     font-size: 14px;
     background: white;
+    background-color:#633489
 
-    width: 800px;
+    width: 90%;
     margin: 0 auto;
     padding: 10px;
     color: #333;
 }
 
 .wrapper {
-  background: #0B4C5F;
+  background: #38A09D;
   margin: auto;
   padding: 1em;
-  width: 100%;
   color: white;
 }
 h1 {
@@ -37,8 +76,8 @@ ul.tabs li {
   padding: .25em .5em;
 }
 ul.tabs li a {
-  color: gray;
-  font-weight: bold;
+  color: whitesmoke;
+  /*font-weight: bold;*/
   text-decoration: none;
 }
 ul.tabs li.active {
@@ -51,7 +90,7 @@ ul.tabs li.active a {
 ul.tabs li:hover{
   color: white;
   
-  background: #91DAF2;
+  background: #424242;
 }
 
 ul.tabs li a:hover{
@@ -67,6 +106,7 @@ ul.tabs li a:hover{
 .article_tabs {
   border-top: gray solid 1px;
   padding: 0 1em;
+  vertical-align: middle;
 }
 
 .login-area {
@@ -80,7 +120,6 @@ ul.tabs li a:hover{
 .footer-area {
     font-size: 13px;
     color: gray;
-    position: absolute;
     margin-bottom: 30px;
     text-align: center;
 }
@@ -145,14 +184,112 @@ input[type=submit] {
   font-size: 14px;
 }
 
+.div-main-title {
+
+}
 .main-title {
-    display: block;
-    color: #222;
+    /*display: block;*/
+    color: #08827E;
     font-size: 40px;
     font-weight: bold;
-    text-align: center;
-    margin-bottom: 30px;
+    /*text-align: center;
+    margin-bottom: 30px;*/
     text-decoration: none;
 }
 
+.main-title:hover {
+    color: #38A09D;
+}
 
+
+
+.content {
+    font-size: 13px;
+    /*color: gray;*/
+    /*position: absolute;*/
+    /*top: 10px;
+    right: 10px;*/
+    /*background: #0B4C5F;*/
+    margin: auto;
+    padding: 1em;
+    /*width: 100%;*/
+    /*color: white;*/
+}
+
+.login-index {
+  font-size: 13px;
+    /*color: gray;*/
+    position: relative;
+    /*top: 10px;
+    right: 10px;*/
+    background: #0B4C5F;
+    margin: auto;
+    padding: 1em;
+    width: 100%;
+    color: white;
+}
+
+.menu-area {
+    font-size: 13px;
+    /*color: gray;*/
+    position: relative;
+    /*top: 10px;
+    right: 10px;*/
+    margin: auto;
+    /*padding: 1em;*/
+    color: white;
+}
+
+/* Main menu*/
+
+ ul.base {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #38A09D;
+}
+
+li.base {
+    float: left;
+}
+
+li.base a, .dropbtn {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li.base a:hover, .dropdown:hover .dropbtn {
+    background-color: #424242;
+}
+
+li.dropdown {
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {background-color: #f1f1f1}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Fin Main menu*/

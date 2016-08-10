@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   
@@ -10,24 +10,55 @@
 
 <body>
   
-  <section>
+  
     <header>
-      <a href="/ioffer/welcome" class="main-title">
-        IOffer
-      </a>
+      <div class="div-main-title">
+        <a href="/ioffer/welcome" class="main-title">
+          IOffer
+        </a>
+      </div>
 
       <div class="login-area">
         {% if user %}
-          {{user.name}} (<a class="login-link" href="/ioffer/logout">logout</a>)
+          Welcome&nbsp;{{user.name}} (<a class="login-link" href="/ioffer/logout">logout</a>)
         {% else %}
           <a class="login-link" href="/ioffer/login">login</a>
           |
           <a class="login-link" href="/ioffer/signup">signup</a>
         {% endif %}
       </div>
+
+      <div class="menu-area">
+
+       <ul class="base">
+          <li class="base"><a class="active" href="#home">Home</a></li>
+          <li class="base"><a href="#news">News</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropbtn">Dropdown</a>
+            <div class="dropdown-content">
+              <a href="#">Link 1</a>
+              <a href="#">Link 2</a>
+              <a href="#">Link 3</a>
+            </div>
+          </li>
+          <li class="dropdown">
+            <a href="#" class="dropbtn">Dropdown2</a>
+            <div class="dropdown-content">
+              <a href="#">Link 1</a>
+              <a href="#">Link 2</a>
+              <a href="#">Link 3</a>
+            </div>
+          </li>
+        </ul>
+
+      </div>
+      
+
+
     </header>
+    <section>
 <main>
-    <div id="content">
+    <div class="content" id="content">
     {% block content %}
     {% endblock %}
     </div>

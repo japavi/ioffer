@@ -12,7 +12,7 @@ $(function(){
             var activeTab = $('ul.tabs li:last').find('a').attr('href');
             $(activeTab).show();
             var dataString = 'username='+ '{{ user.name }}';  
-            //alert(dataString)
+            /*alert(dataString)*/
                $.ajax({
                 type: "POST",
                   url: "/ioffer/offers_user_display",
