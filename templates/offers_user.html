@@ -27,28 +27,33 @@ $(function(){
         {% endif %}
             });
       })
+</script>
 
+{% for offer in offers_user %}
+
+<script>
 $(function(){
-            $('#link_offer').click(function(event) {
+            $('#link_offer{{ offer.offer_tittle }}').click(function(event) {
                 
                var dataString = 'user='+ $('#username').val();  
-               /*alert(dataString)*/
+               var data = "/ioffer/offer/" + {{ offer.key().id() }};
+               alert(data);
                $.ajax({
-                type: "POST",
-                url: "/ioffer/show_profile",
+                type: "GET",
+                url: "/ioffer/offer/" + {{ offer.key().id() }},
                 data: dataString, 
                 success: function(data) {
-                    $('#content_profile').html(data);
+                    $('#divtab3').html(data);
                 },
                 error: function() {
-                    $('#content_profile').html('There was an error');
+                    $('#divtab3').html('There was an error');
                 }
                });
             });
         })
 
 </script>
-{% for offer in offers_user %}
+
     <article id="article-offer" class="article_offer">
     <table>
     <tr>

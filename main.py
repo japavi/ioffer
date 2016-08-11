@@ -33,7 +33,7 @@ from webapp2_extras import sessions
 
 from models.User import User
 from models.Profile import Profile
-from models.Offer import Offer
+from models.Offer import Offer, offers_key
 from utils.utils import make_secure_val, check_secure_val, valid_username, valid_password, valid_name, valid_email, categories, countries, profile_types, COOKIE_EXP
 
 template_dir = os.path.join(os.path.dirname(__file__), 'templates')
@@ -488,6 +488,19 @@ class Offers_User_Display(BaseHandler):
         else:
             self.render('no_offers.html', text='There are no offers yet. You must first create a profile to start adding offers')
 
+
+
+class OfferPage(BaseHandler):
+    def get(self, order_id):
+        key = db.Key.from_path('Offer', int(order_id), parent=offers_key())
+        offer = db.get(key)
+
+        if not offer:
+            self.error(404)
+            return
+
+        self.render('offers_form.html', offer = offer, categories = categories)
+
 app = webapp2.WSGIApplication([
     ('/', Init),
     ('/ioffer/signup', Register),
@@ -499,5 +512,6 @@ app = webapp2.WSGIApplication([
     ('/ioffer/add_offer', Send_Offer),
     ('/ioffer/offers_user_display', Offers_User_Display),
     ('/ioffer/show_profile', Show_Profile),
+    ('/ioffer/offer/([0-9]+)', OfferPage),
     ('/ioffer/welcome', Welcome)], config=config, debug=True)
 
