@@ -1,0 +1,39 @@
+<script>
+$(function(){
+      $('#provincias').change(function(event) {
+             var dataString = 'region=' + $('#provincias').val();  
+             alert(dataString);
+             $.ajax({
+                type: "POST",
+                url: "/ioffer/show_region_cities",
+                data:  dataString, 
+                success: function(data) {
+                    $('#cities').html(data);
+                },
+                error: function() {
+                    $('#cities').html('There was an error');
+                }
+             });
+
+
+             var provincia = $('#provincias option:selected').text() + ", " + $('#countries option:selected').text();
+                            alert(provincia);
+                            var geocoder = new google.maps.Geocoder();
+
+                          geocoder.geocode( {'address' : provincia}, function(results, status) {
+                            if (status == google.maps.GeocoderStatus.OK) {
+                                map.setCenter(results[0].geometry.location);
+                                map.setZoom(8);
+                            }
+                          });
+
+
+          });
+      })
+</script>
+<select id="provincias" name="provincias" class="mi-select" placeholder="Select Region *">
+{% for region in list_regs %}
+    <option value="{{ region['reg_code'] }}">{{ region['reg_value']  | safe }}</option>
+{% endfor %}
+</select>
+

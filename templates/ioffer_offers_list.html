@@ -1,0 +1,125 @@
+
+
+<div id="offer_list">
+<h3 class="w3-wide">Closest deals to your location:</h3>
+              
+              <p class="w3-justify">
+
+{% for offer in offers.results  %}
+
+
+<script>
+
+  $( function() {
+    // run the currently selected effect
+    function runEffect{{ offer.field('offer_id').value }}() {
+      // get effect type from
+      var selectedEffect = "clip";
+ 
+      // Most effect types need no options passed by default
+      var options = {};
+
+
+ 
+      // Run the effect
+      $('#toggler').css('display', 'block');
+      $('#toggler').css('height', '100%');
+      $( "#effect" ).show( selectedEffect, options, 500, callback{{ offer.field('offer_id').value }} );
+      //alert($('#toggler').css());
+    };
+
+        //callback function to bring a hidden box back
+    function callback{{ offer.field('offer_id').value }}() {/*
+      setTimeout(function() {
+        $( "#effect:visible" ).removeAttr( "style" ).fadeOut(); $('#toggler').css('display', 'none');
+          }, 20000 );*/
+        };
+     
+        // Set effect from select menu value
+    $( "#link_s_offer{{ offer.field('offer_id').value }}" ).on( "click", function() {
+          //alert('tu madre');
+      var dataString = 'user='+ $('#username').val();  
+
+
+
+      /*$('body').css('overflow', 'auto');
+      $('html').css('overflow', 'auto');*/
+      
+
+      offsetY = window.pageYOffset;
+        // Block scrolling
+        
+
+        $('body').css({
+           
+                /*'color': '#FFFF00',
+                'backgroundColor': '#00D',*/
+                'top': -offsetY + 'px'
+        });
+      
+
+               
+      $.ajax({
+        type: "GET",
+        url: "/ioffer/offer_show/" + {{ offer.field('offer_id').value }},
+        data: dataString, 
+        success: function(data) {
+          $('body').toggleClass("bodyfix");
+          $('#divoffer').html(data);
+        },
+        error: function() {
+          $('#divoffer').html('There was an error');
+        }
+      });
+      runEffect{{ offer.field('offer_id').value }}();
+    });
+        
+    $( "#effect" ).hide();
+
+  });
+
+</script>
+
+<div id="erestontooque"> <!-- dejalo puesto este div pq si no, no se pq, el primer link no va, el resto si va -->
+<a id="link_s_offer{{ offer.field('offer_id').value }}" class="offer-link">
+
+  <article id="article-offer" class="article_offer">
+
+    <div class="blog-thumb-left">
+        <img alt="img_cat" src="/static/img/{{ offer.field('offer_category').value }}.jpg"/> 
+    </div>
+
+     <div class="article_offer_right">
+
+    
+    <h5 class="h5offer_title">{{ offer.field('offer_title').value|title }}</h5>
+
+   
+     
+
+     <div id="loc"><img id="img_loc" alt="loc" src="/static/img/location_marker_pin-512.png"/>{{ offer.field('name').value if (offer.field('name').value) | length < 30 else  (offer.field('name').value)[:30] + '...'}} - {{ offer.field('city').value + ' - ' + offer.field('country').value if (offer.field('city').value + ' - ' + offer.field('country').value) | length < 30 else  (offer.field('city').value + ' - ' + offer.field('country').value)[:30] + '...'}}<br>&nbsp;&nbsp;&nbsp;Distance:&nbsp;{{ "{:,.2f}".format(offer.expressions[0].value) }} mts.
+
+     </div>
+    <div id="descuento">
+      <label id="lbl_offer_before"><del>{{"{:,.2f}".format(offer.field('offer_before').value|float / 1000000)+'M' if offer.field('offer_before').value|float > 1000000 else "{:,.2f}".format(offer.field('offer_before').value|float / 1000)+'K' if offer.field('offer_before').value|float > 1000 else "{:,.2f}".format(offer.field('offer_before').value|float)}}&nbsp;{{offer.field('offer_currency').value or ''}}</del></label>&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+      <label id="lbl_offer_desc">{{ "{:,.0f}".format((100 - offer.field('offer_after').value|float * 100 / offer.field('offer_before').value|float)|round) if offer.field('offer_before').value and offer.field('offer_after').value and offer.field('offer_before').value|float > 0 else '0'}}%</label>&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+      <label id="lbl_offer_after">{{"{:,.2f}".format(offer.field('offer_after').value|float / 1000000)+'M' if offer.field('offer_after').value|float > 1000000 else "{:,.2f}".format(offer.field('offer_after').value|float / 1000)+'K' if offer.field('offer_after').value|float > 1000 else "{:,.2f}".format(offer.field('offer_after').value|float)}}&nbsp;{{offer.field('offer_currency').value or ''}}</label>
+     </div>
+
+     </div>
+
+     <div id="clear"></div>
+
+
+    
+    </article>
+  
+</a>
+</div>
+{% endfor %}
+</p>
+</div>

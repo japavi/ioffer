@@ -1,0 +1,6 @@
+<select id="offer_currency" name="offer_currency" class="offer_currencies" placeholder="Offer Currency *">
+    <option value="" disabled selected>Select Currency *</option>
+{% for cur in currencies %}
+    <option value="{{ cur }}" {% if offer and offer.offer_currency == cur %} selected {% endif %}{% if params and params['offer_currency'] == cur %} selected {% endif %}>{{ currencies[cur] }}</option>
+{% endfor %}
+</select>

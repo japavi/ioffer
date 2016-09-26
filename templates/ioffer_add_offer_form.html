@@ -1,0 +1,307 @@
+
+  
+  
+<script>
+    /*$( function() {
+    var dateFormat = "mm/dd/yyyy",
+      from = $( "#offer_start_date" )
+        .datepicker({
+          defaultDate: "+1w",
+          changeMonth: true,
+          numberOfMonths: 3
+        })
+        .on( "change", function() {
+          to.datepicker( "option", "minDate", getDate( this ) );
+        }),
+      to = $( "#offer_end_date" ).datepicker({
+        defaultDate: "+1w",
+        changeMonth: true,
+        numberOfMonths: 3
+      })
+      .on( "change", function() {
+        from.datepicker( "option", "maxDate", getDate( this ) );
+      });
+ 
+    function getDate( element ) {
+      var date;
+      try {
+        date = $.datepicker.parseDate( dateFormat, element.value );
+      } catch( error ) {
+        date = null;
+      }
+ 
+      return date;
+    }
+  } );*/
+
+  
+  $( function() {
+    $( "#offer_start_date" ).datepicker();
+  } );
+
+  $( function() {
+    $( "#offer_end_date" ).datepicker();
+  } );
+  
+
+   (function($) {
+$.fn.serializefiles = function() {
+    var obj = $(this);
+    /* ADD FILE TO PARAM AJAX */
+    var formData = new FormData();
+    $.each($(obj).find("input[type='file']"), function(i, tag) {
+        $.each($(tag)[0].files, function(i, file) {
+            formData.append(tag.name, file);
+            //alert('added:' + tag.name + '[' + file + ']');
+        });
+    });
+    var params = $(obj).serializeArray();
+    $.each(params, function (i, val) {
+        formData.append(val.name, val.value);
+    });
+    return formData;
+};
+})(jQuery);
+
+
+$(function(){
+            $('#saveoffer').click(function(event) {
+
+              {% if not offer %} /*No hay oferta por tanto viene de crear una nueva oferta, ocultamos el div toggler de mostrar oferta*/
+                $( "#effect:visible" ).removeAttr( "style" ).fadeOut(); $('#toggler').css('display', 'none');
+              {% endif %}
+
+              var dataf = $("#offer_form").serializefiles();
+
+               $.ajax({
+                type: "POST",
+                url: "/ioffer/add_offer",
+                cache: false,
+                contentType: false,
+                processData: false,
+                data: dataf, 
+                {% if not offer %}
+
+                  success: function(data) {
+
+                   /*alert("sin offer");*/
+                      /*alert(data);*/
+
+                      if (data.indexOf("hubo_error") >= 0)
+                    {
+                      /*alert("Viene con error");*/
+                      {% if page == 'm' %}
+                      /*alert("viene de m");
+                      alert(data);*/
+                        $('#divoffer').html(data);
+                      {% else %}
+                         $('#tab-central2').html(data);
+                      {% endif %}
+                    }
+                    else
+                    {
+                      /*alert("Viene sin errores");*/
+                      {% if page == 'm' %}
+                        /*alert("viene de m");
+                        alert(data);*/
+                        $('#divoffer').html(data);
+                      {% else %}
+                         $('#tab-central3').html(data);
+                      {% endif %}
+                    }
+
+                      //$('#tab-central3').html(data);
+                  },
+                  error: function() {
+                      $('#tab-central3').html('There was an error');
+                  }
+                {% else %}
+
+                  success: function(data) {
+                    /*alert("con offer");*/
+                    /*alert(data);*/
+                    /*var $response=$(data);*/
+                    if (data.indexOf("hubo_error") >= 0)
+                    {
+                      /*alert("Viene con error");*/
+                     
+                       {% if page == 'm' %}
+                       /*alert("viene de m");
+                        alert(data);*/
+                        $('#divoffer').html(data);
+                      {% else %}
+                         $('#tab-central2').html(data);
+                      {% endif %}
+                    }
+                    else
+                    {
+                      /*alert("Viene sin errores");*/
+                      {% if page == 'm' %}
+                      /*alert("viene de m");
+                        alert(data);*/
+                        $('#divoffer').html(data);
+                      {% else %}
+                         $('#tab-central3').html(data);
+                      {% endif %}
+                    }
+                  },
+                  error: function() {
+                    /*alert("errorrrr");
+                        alert(data);*/
+                    $('#tab-central2').html('There was an error');
+                  }
+                {% endif %}
+               });
+            });
+        });
+
+{% if offer %}
+$(function(){
+            $('#btn_cancel').click(function(event) {
+                
+               var dataString = 'user='+ $('#username').val();  
+               
+               $.ajax({
+                type: "GET",
+                url: "/ioffer/offer/" + {{ offer.key().id() }},
+                data: dataString, 
+                success: function(data) {
+                  /*alert(data);*/
+                    $('#divoffer').html(data);
+                },
+                error: function() {
+                  /*alert("errorrrr cancel");
+                        alert(data);*/
+                    $('#divoffer').html('There was an error');
+                }
+               });
+            });
+        });
+{% endif %}
+
+</script>
+
+<form id="offer_form">
+  <h2 class="w3-wide">{{ profile.name }}</h2>
+              <p class="w3-opacity"><i>{{ user.name }}</i></p>
+              <p >
+
+
+            <fieldset>
+              <legend>Offer Data:</legend>
+   
+            <input type="hidden" id="username" name="username" value="{{ user.name }}">
+            <input type="hidden" id="name" name="name" value="{{ profile.name }}">
+            <input type="hidden" id="offerid" name="offerid" value="{% if offer %}{{ offer.key().id() }}{% endif %}">
+            <input type="hidden" id="page" name="page" value="{{ page }}">
+
+            
+            <input type="text" id="offer_tittle" name="offer_tittle" placeholder="Offer Tittle *" value="{% if params %}{{ params['offer_tittle'] }}{% else %}{% if offer %}{{ offer.offer_tittle }}{% endif %}{% endif %}" >
+            
+            {% if params and params['error_offer_tittle'] %}
+            <div class="error">
+              {{  params['error_offer_tittle'] }}
+            </div>
+            {% endif %}
+
+
+            {% include "categories.html" %}
+            {% if params and params['error_offer_category'] %}
+            <div class="error">
+              {{  params['error_offer_category'] }}
+            </div>
+            {% endif %}
+
+            
+            <textarea cols="5" rows="5" id="offer_short_desc" name="offer_short_desc" placeholder="Short Offer Description *">{% if params %}{{ params['offer_short_desc'] }}{% else %}{% if offer %}{{ offer.offer_short_desc }}{% endif %}{% endif %}</textarea>
+            {% if params and params['error_offer_short_desc'] %}
+            <div class="error">
+              {{  params['error_offer_short_desc'] }}
+            </div>
+            {% endif %}
+
+            <textarea cols="5" rows="10" id="offer_desc" name="offer_desc" placeholder="Offer Description *">{% if params %}{{ params['offer_desc'] }}{% else %}{% if offer %}{{ offer.offer_desc }}{% endif %}{% endif %}</textarea>
+            {% if params and params['error_offer_desc'] %}
+            <div class="error">
+              {{  params['error_offer_desc'] }}
+            </div>
+            {% endif %}
+
+            
+            <input type="text" id="offer_start_date" name="offer_start_date" class="input-text" placeholder="Starting Date" value="{% if params %}{{ params['offer_start_date'] }}{% else %}{% if offer %}{{ offer.offer_start_date.strftime("%m/%d/%Y") }}{% endif %}{% endif %}">
+
+            
+            <input type="text" id="offer_end_date" name="offer_end_date" class="input-text" placeholder="Ending Date" value="{% if params %}{{ params['offer_end_date'] }}{% else %}{% if offer %}{{ offer.offer_end_date.strftime("%m/%d/%Y") }}{% endif %}{% endif %}">
+             {% if params and params['error_offer_end_date'] %}
+            <div class="error">
+              {{  params['error_offer_end_date'] }}
+            </div>
+            {% endif %}
+
+            <div id="cabron"><input type="text" id="offer_before" name="offer_before" class="offer_before" placeholder="Price Before *" value="{% if params %}{{ params['offer_before'] }}{% else %}{% if offer %}{{ offer.offer_before }}{% endif %}{% endif %}" >
+            </div>
+
+            <div id="hijoputa"><input type="text" id="offer_after" name="offer_after" class="offer_after" placeholder="Price After *" value="{% if params %}{{ params['offer_after'] }}{% else %}{% if offer %}{{ offer.offer_after }}{% endif %}{% endif %}" >
+            </div>
+
+            <div id="offer_currency_container">{% include "currency.html" %}
+            </div>
+
+            <div id="clear"></div>
+
+             <label class="profile-label" for="image_offer"><i>Upload Image:</i>
+            </label>
+            <p></p>
+            <input type="file" id="image_offer" name="image_offer" class="input-text" value="" enctype="multipart/form-data">
+
+            <div id="images_container">
+            {% if offer %}
+            {% for img in offer.images %}
+              
+              <figure  class="fig_modify_offer">
+                <img alt="test" src="/ioffer/images/{{ img.key().id() }}" style="width: 100px; height: 100px"/> 
+
+                <figcaption class="figcap_modify_offer">{{img.image_file_name}} <p><input type="checkbox" id="img_deletes" name="img_deletes" value="{{ img.key().id() }}"> Delete<br></p></figcaption>
+              </figure>
+              
+              {% endfor %}
+            {% endif %}
+            {% if params %}
+              {% if params['image_offer'] %}
+                {% for img in params['image_offer'] %}
+                  {{img['filename']}}
+                {% endfor %}
+              {% endif %}
+            {% endif %}
+
+            <div id="clear"></div>
+
+            {% if params and params['error_img'] %}
+            <div class="error">
+              {{ params['filename'] }}: {{ params['error_img'] }}
+            </div>
+            {% endif %}
+
+            </div>
+
+
+            
+          
+            <textarea cols="5" rows="5" id="offer_conditions" name="offer_conditions" placeholder="Offer Conditions *">{% if params %}{{ params['offer_conditions'] }}{% else %}{% if offer %}{{ offer.offer_conditions }}{% endif %}{% endif %}</textarea>
+
+
+          </fieldset>
+
+             <div class="error">
+                  {{error}}
+            </div>
+            <div class="buttonHolder"> <!-- al imbecil de safari, en este form, no le gusta el input type miboton, no se pq -->
+              <input type="button" id="saveoffer" value="Publish Offer" name="saveoffer">
+              {% if offer %}<input type="button" id="btn_cancel" value="Cancel" >{% endif %}
+            </div>
+         
+       
+      </p>
+
+ 
+</form>

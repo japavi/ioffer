@@ -1,0 +1,77 @@
+
+
+<script>
+
+$(function(){
+          $('#modify-profile').click(function(event) {
+             var dataString = 'username='+ '{{ user.name }}';  
+             $.ajax({
+              type: "POST",
+                url: "/ioffer/modify_profile",
+                data: dataString, 
+                success: function(data) {
+                    $('#tab-central1').html(data);
+                },
+                error: function() {
+                    $('#tab-central1').html('There was an error');
+                }
+             });
+          });
+    })
+
+</script>
+
+<form id="profile-edit-form">
+<h2 class="w3-wide">{{ profile.name }}</h2>
+              <p class="w3-opacity"><i>{{ user.name }}</i></p>
+              <p class="w3-justify">
+                
+                      <!-- <p><h2>Profile</h2></p>
+                        <p class="form-row form-row-first"> -->
+                          <input type="hidden" id="username" name="username" value="{{ user.name }}">
+                        <!-- <label class="profile-label"><i>User Name:</i></label><label style="padding-left: 5px;">&nbsp;{{ user.name }}</label> -->
+                        <fieldset>
+                        <legend>Profile Type:</legend>
+                        <label class="profile-edit-label"><i>Profile&nbsp;Type:</i></label><label class="profile-edit-data-label">&nbsp;{{ profile_types[profile.profile_type] }}</label>
+                      </fieldset>
+                      <fieldset>
+                        <legend>Basic Info:</legend>
+                        <label class="profile-edit-label"><i>Profile&nbsp;Name:</i></label><label class="profile-edit-data-label">&nbsp;{{ profile.name }}</label>
+                        <label class="profile-edit-label"><i>Email:</i></label><label class="profile-edit-data-label">&nbsp;{{ profile.email }}</label>
+                      
+                        <label class="profile-edit-label"><i>Profile&nbsp;Created&nbsp;Date:</i></label><label class="profile-edit-data-label">&nbsp;{{ profile.profile_created.strftime('%Y-%m-%d %H:%M:%S') }}</label>
+                        <label class="profile-edit-label"><i>Profile&nbsp;Last&nbsp;Modified&nbsp;Date:</i></label><label class="profile-edit-data-label">&nbsp;{{ profile.profile_last_modified.strftime('%Y-%m-%d %H:%M:%S') }}</label>
+
+                      </fieldset>
+
+                      <fieldset>
+                        <legend>Address:</legend>
+
+                        <label class="profile-edit-label"><i>Phone:</i></label><label class="profile-edit-data-label">&nbsp;{{ profile.phone }}</label>
+                        <label class="profile-edit-label"><i>Street&nbsp;Address:</i></label><label class="profile-edit-data-label">&nbsp;{{ profile.street_address }}</label>
+                        <label class="profile-edit-label"><i>Address&nbsp;Line&nbsp;2:</i></label><label class="profile-edit-data-label">&nbsp;{{ profile.address_line_2 }}</label>
+                        <label class="profile-edit-label"><i>City:</i></label><label class="profile-edit-data-label">&nbsp;{{ profile.city }}</label>
+                        <label class="profile-edit-label"><i>State&nbsp;/&nbsp;Province&nbsp;/&nbsp;County&nbsp;/&nbsp;Region:</i></label><label class="profile-edit-data-label">&nbsp;{{ profile.region }}</label>
+                        <label class="profile-edit-label"><i>Postal&nbsp;/&nbsp;Zip Code:</i></label><label class="profile-edit-data-label">&nbsp;{{ profile.zip_code }}</label>
+                        <label class="profile-edit-label"><i>Country:</i></label><label class="profile-edit-data-label">&nbsp;{{ profile.country }}</label>
+
+                      </fieldset>
+
+                      <fieldset>
+                        <legend>Social Media Info:</legend>
+
+                        <label class="profile-edit-label"><i>Web:</i></label><label class="profile-edit-data-label">&nbsp;{{ profile.web }}</label>
+                        <label class="profile-edit-label"><i>Facebook:</i></label><label class="profile-edit-data-label">&nbsp;{{ profile.facebook }}</label>
+                        <label class="profile-edit-label"><i>Twitter:</i></label><label class="profile-edit-data-label">&nbsp;{{ profile.twitter }}</label>
+                        <label class="profile-edit-label"><i>Youtube:</i></label><label class="profile-edit-data-label">&nbsp;{{ profile.youtube }}</label>
+                                               
+                      </fieldset>
+
+                        <br>
+         
+                        <!-- <p id="modify-profile">Modify Profile</p> -->
+                        <div class="buttonHolder">
+                          <input type="miboton" id="modify-profile" value="Update Profile" class="button">
+                        </div>
+                </p></form>
+

@@ -1,4 +1,39 @@
-<select id="countries" name="countries">
+<script>
+$(function(){
+      $('#countries').change(function(event) {
+             var dataString = 'country=' + $('#countries').val();  
+             alert(dataString);
+             $.ajax({
+                type: "POST",
+                url: "/ioffer/show_country_regions",
+                data:  dataString, 
+                success: function(data) {
+                    $('#regions').html(data);
+                },
+                error: function() {
+                    $('#regions').html('There was an error');
+                }
+             });
+
+             var country = $('#countries option:selected').text();
+                            alert(country);
+                            var geocoder = new google.maps.Geocoder();
+
+                          geocoder.geocode( {'address' : country}, function(results, status) {
+                            if (status == google.maps.GeocoderStatus.OK) {
+                                map.setCenter(results[0].geometry.location);
+                                map.setZoom(4);
+                            }
+                          });
+
+
+
+
+          });
+      })
+</script>
+
+<select id="countries" name="countries" class="mi-select" placeholder="Select Country *">
 {% for country in countries %}
     <option value="{{ country }}" {% if params['country'] == country %} selected {% endif %}>{{ countries[country] }}</option>
 {% endfor %}

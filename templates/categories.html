@@ -1,5 +1,6 @@
-<select id="offer_category" name="offer_category">
+<select id="offer_category" name="offer_category" class="mi-select" placeholder="Offer Category *">
+    <option value="" disabled selected>Offer Category *</option>
 {% for cat in categories %}
-    <option value="{{ cat }}">{{ categories[cat] }}</option>
+    <option value="{{ cat }}" {% if offer and offer.offer_category == cat %} selected {% endif %}{% if params and params['offer_category'] == cat %} selected {% endif %}>{{ categories[cat] }}</option>
 {% endfor %}
 </select>

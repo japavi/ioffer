@@ -1,0 +1,198 @@
+
+
+<script>
+$(function(){
+            $('#btn_send').click(function(event) {
+                
+               var dataString = 'username='+ $('#username').val() + '&name=' + $('#name').val() + '&original_name=' + $('#original_name').val() + '&profile_type=' + $('input[name=profile_type]:checked', '#profile-form').val() + '&email=' + $('#email').val() + '&geo_pt=' + $('#geo_pt').val()
+               + '&phone=' + $('#phone').val() + '&street_address=' + $('#street_address').val() + '&address_line_2=' + $('#address_line_2').val() 
+               + '&city=' + $('#city').val() + '&region=' + $('#region').val() + '&zip_code=' + $('#zip_code').val() + '&country=' + $('#country').val() + '&web=' + $('#web').val();  
+               //alert(dataString);
+               $.ajax({
+                type: "POST",
+                url: "/ioffer/send_profile",
+                data: dataString, 
+                success: function(data) {
+                    $('#tab-central1').html(data);
+                },
+                error: function() {
+                    $('#tab-central1').html('There was an error');
+                }
+               });
+            });
+        })
+
+$(function(){
+            $('#btn_cancel').click(function(event) {
+                
+               var dataString = 'user='+ $('#username').val();  
+                $('#tab-central1').html("");
+               //alert(dataString);
+               $.ajax({
+                type: "POST",
+                url: "/ioffer/show_profile",
+                data: dataString, 
+                success: function(data) {
+                  //alert(data);
+                    $('#tab-central1').html(data);
+                    //alert("kk:" + $('#tab-central2').html());
+                },
+                error: function() {
+                    $('#tab-central1').html('There was an error');
+                }
+               });
+            });
+        })
+
+</script>
+
+<form id="profile-form">
+<h2 class="w3-wide">{% if params and params['name'] %}{{ params['name'] }}{% else %}Fill in your profile and start to publish offers{% endif%}</h2>
+              <p class="w3-opacity"><i>{{ params['username'] }}</i></p>
+              <p class="w3-justify">
+
+        
+         
+                        <!-- <label class="profile-label" for="profile_type"><i>Profile Type:</i></label>
+                        <p></p> -->
+                        {% include "profile_type.html" %}
+                        <p></p>
+        
+
+                        <input type="hidden" id="username" name="username" value="{{ params['username'] }}">
+                        <input type="hidden" id="original_name" name="original_name" value="{{ params['name'] }}">
+
+
+                        <fieldset>
+                        <legend>Basic Info:</legend>
+        
+
+
+                        <label class="profile-label" for="name"><i>Profile Name: <span class="required">*</span></i>
+                        </label>
+                        <p></p>
+                        <input type="text" id="name" name="name" placeholder="Profile Name *" value="{{ params['name'] }}">
+                        <div class="error">
+                          {{ params['error_name'] }}
+                        </div>
+        
+
+
+                        <label class="profile-label" for="email"><i>Email: <span class="required">*</span></i>
+                        </label>
+                        <p></p>
+                        <input type="email" id="email" name="email" placeholder="Email *" value="{{ params['email'] }}">
+                        <div class="error">
+                          {{ params['error_email'] }}
+                        </div>
+
+                        </fieldset>
+
+                        
+
+                        <!-- <label class="profile-label" for="countries">Country:
+                        </label> -->
+
+                        
+                        <!-- <p></p>
+                        {% include "countries.html" %}
+
+                        <section id="regions"></section>
+                        <section id="cities"></section> -->
+
+                       
+
+                        {% include "location.html" %}
+                        
+                        
+
+                        <fieldset>
+                        <legend>Address:</legend>
+
+
+                        <label class="profile-label" for="street_address">Street Address:
+                        </label>
+                        <p></p>
+                        <input type="text" id="street_address" placeholder="Street Address" name="street_address" value="{{ params['street_address'] }}">
+        
+
+                        <label class="profile-label" for="address_line_2">Address Line 2:
+                        </label>
+                        <p></p>
+                        <input type="text" id="address_line_2" name="address_line_2" placeholder="Address Line 2" value="{{ params['address_line_2'] }}">
+
+
+                        <label class="profile-label" for="city">City:
+                        </label>
+                        <p></p>
+                        <input type="text" id="city" name="city" placeholder="City" value="{{ params['city'] }}">
+
+
+                        <label class="profile-label" for="region">State / Province / County / Region:
+                        </label>
+                        <p></p>
+                        <input type="text" id="region" name="region" class="input-text" placeholder="State / Province / County / Region" value="{{ params['region'] }}">
+
+                        <label class="profile-label" for="country">Country:
+                        </label>
+                        <p></p>
+                        <input type="text" id="country" name="country" class="input-text" placeholder="Country" value="">
+
+                        <label class="profile-label" for="zip_code">Postal / Zip Code:
+                        </label>
+                        <p></p>
+                        <input type="text" id="zip_code" name="zip_code" class="input-text" placeholder="Postal / Zip Code" value="{{ params['zip_code'] }}">
+
+                        <label class="profile-label" for="phone">Phone: 
+                        </label>
+                        <p></p>
+                        <input type="phone" id="phone" name="phone" placeholder="Phone" class="input-text" value="{{ params['phone'] }}">
+
+                    </fieldset>
+
+
+                    <fieldset>
+                        <legend>Social Media Info:</legend>
+
+                        
+
+
+                        <label class="profile-label" for="web">Web:
+                        </label>
+                        <p></p>
+                        <input type="url" id="web" name="web" class="input-text" placeholder="Web Url" value="{{ params['web'] }}">
+
+                        <label class="profile-label" for="facebook">Facebook:
+                        </label>
+                        <p></p>
+                        <input type="url" id="facebook" name="facebook" class="input-text" placeholder="Facebook" value="{{ params['facebook'] }}">
+
+                        <label class="profile-label" for="twitter">Twitter:
+                        </label>
+                        <p></p>
+                        <input type="text" id="twitter" name="twitter" class="input-text" placeholder="Twitter" value="{{ params['twitter'] }}">
+
+                        <label class="profile-label" for="youtube">Youtube:
+                        </label>
+                        <p></p>
+                        <input type="url" id="youtube" name="youtube" class="input-text" placeholder="Youtube" value="{{ params['youtube'] }}">
+
+                    </fieldset>
+        
+
+          <div class="error">
+            {{ error }}
+          </div>
+        <br>
+
+    <div class="buttonHolder">
+        <input type="miboton" id="btn_send" value="{{ btn_send }}">
+        {% if btn_send != 'Save' %}
+            <input type="miboton" id="btn_cancel" value="Cancel">
+        {% endif %}
+    </div>
+
+
+                </p>
+                      </form>
+

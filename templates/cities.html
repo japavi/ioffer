@@ -1,0 +1,27 @@
+<script>
+$(function(){
+      $('#cities').change(function(event) {
+             
+
+
+             var city = $('#cities option:selected').text() + ", " + $('#provincias option:selected').text() + ", " + $('#countries option:selected').text();
+                            alert(city);
+                            var geocoder = new google.maps.Geocoder();
+
+                          geocoder.geocode( {'address' : city}, function(results, status) {
+                            if (status == google.maps.GeocoderStatus.OK) {
+                                map.setCenter(results[0].geometry.location);
+                                map.setZoom(12);
+                            }
+                          });
+
+
+          });
+      })
+</script>
+
+<select id="cities" name="cities" class="mi-select" placeholder="Select City *">
+{% for city in list_cities %}
+    <option value="{{ city['cit_code'] }}">{{ city['cit_value']  | safe }}</option>
+{% endfor %}
+</select>

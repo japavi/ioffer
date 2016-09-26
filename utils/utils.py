@@ -2,15 +2,20 @@ import re
 import random
 import hashlib
 import hmac
+import logging
 
 from string import letters
+from google.appengine.ext import db
 
 secret = 'fart'
 
 categories = dict([('BAR','Bars & Clubs'),('RST','Restaurants'),('BTY','Hair & Beauty'),('SRV','General Services'),('SHP','Shopping'),('MOT','Motoring'),('FIT','Fitness & Health'),
-    ('HOT','Hotels'),('HOM','Home Services'),('INM','State Agent')])
+    ('HOT','Hotels'),('HOM','Home Services'),('INM','State Agent'),('TRV','Travel'),('PET','Pets & Animals'),('FOO','Food'),('LEI','Leisure & Adventure'),('OTH','Others')])
 
-countries = dict([('SPA','Spain'),('IRL','Ireland'),('UK','United Kingdom'),('USA','United States')])
+countries = dict([('ES','Spain'),('IE','Ireland'),('GB','United Kingdom'),('US','United States')])
+currencies = dict([('USD','USD'),('GBP','GBP'),('EUR','EUR')])
+
+cities = dict([('MAD','Madrid'),('ATL','Athlone'),('DUB','Dublin'),('ALC','Alcorcon')])
 profile_types = dict([('particular','Particular'),('empresa','Empresa')])
 
 ##### user stuff
@@ -54,3 +59,13 @@ def valid_email(email):
 
 COOKIE_EXP="; Expires=True, 1 Jan 2025 00:00:00 GMT"   
 
+def geo_converter(geo_str):
+    '''
+    Converter function - return db.GeoPt from str
+    '''
+
+    logging.error('geo_str: %s' % geo_str)
+    if geo_str:
+        lat, lng = geo_str.split(',')
+        return db.GeoPt(lat=float(lat), lon=float(lng))
+    return None

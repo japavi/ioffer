@@ -1,0 +1,108 @@
+<script>
+
+(function($) {
+$.fn.serializefiles = function() {
+    var obj = $(this);
+    /* ADD FILE TO PARAM AJAX */
+    var formData = new FormData();
+    $.each($(obj).find("input[type='file']"), function(i, tag) {
+        $.each($(tag)[0].files, function(i, file) {
+            formData.append(tag.name, file);
+            //alert('added:' + tag.name + '[' + file + ']');
+        });
+    });
+    var params = $(obj).serializeArray();
+    $.each(params, function (i, val) {
+        formData.append(val.name, val.value);
+    });
+    return formData;
+};
+})(jQuery);
+
+
+$(function(){
+      $("#ioffer_signup").click(function(e) {
+
+
+        var dataf = $("#signup-form").serializefiles();
+
+         $.ajax({
+          type: "POST",
+          url: "/ioffer/signup",
+          cache: false,
+          contentType: false,
+          processData: false,
+          data: dataf, 
+          success: function(data) {
+                //alert(data);
+            /*$('#divsignup').html(data);*/
+            $( "#effect-signup:visible" ).removeAttr( "style" ).fadeOut(); $('#toggler-signup').css('display', 'none');
+                location.reload();
+          },
+          error: function() {
+
+            $('#divsignup').html('There was an error');
+          }
+         });
+      });
+  });
+
+</script>
+
+<section class="col-md-12">
+            <form id="signup-form">
+
+                <fieldset>
+              <legend>iOffer Signup</legend>
+
+  
+
+                <p class="form-row form-row-first">
+                    <label for="username" class="login-label">Username <span class="required">*</span>
+                    </label>
+                    <input type="text" id="username" name="username" value="{% if params and params['username'] %}{{  params['username'] }}{% endif %}">
+                    {% if params and params['error_username'] %}
+                    <div class="error">
+                      {{  params['error_username'] }}
+                    </div>
+                    {% endif %}
+                </p>
+                <p class="form-row form-row-last">
+                    <label for="password">Password <span class="required">*</span>
+                    </label>
+                    <input type="password" id="password" name="password" class="input-text">
+                    {% if params and params['error_password'] %}
+                    <div class="error">
+                      {{  params['error_password'] }}
+                    </div>
+                    {% endif %}
+                </p>
+                <p class="form-row form-row-last">
+                    <label for="verify">Verify Password <span class="required">*</span>
+                    </label>
+                    <input type="password" id="verify" name="verify" class="input-text">
+                    {% if params and params['error_verify'] %}
+                    <div class="error">
+                      {{  params['error_verify'] }}
+                    </div>
+                    {% endif %}
+                </p>
+                <p class="form-row form-row-last">
+                    <label for="username">Email <span class="required">*</span>
+                    </label>
+                    <input type="text" id="email" name="email" class="input-text" value="{% if params and params['email'] %}{{  params['email'] }}{% endif %}">
+                    {% if params and params['error_email'] %}
+                    <div class="error">
+                      {{  params['error_email'] }}
+                    </div>
+                    {% endif %}
+                </p>
+                <div class="clear"></div>
+
+                <p class="form-row">
+                    <input id="ioffer_signup" type="miboton" value="Signup" name="signup" class="button">
+                </p>
+                <div class="clear"></div>
+              </fieldset>
+            </form>
+</section>

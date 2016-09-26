@@ -1,4 +1,4 @@
-
+import logging
 from utils.utils import valid_pw, make_pw_hash, make_salt
 
 from google.appengine.ext import db
@@ -31,5 +31,7 @@ class User(db.Model):
     @classmethod
     def login(cls, name, pw):
         u = cls.by_name(name)
+        logging.error('name: %s' % name)
+        logging.error('u: %s' % u)
         if u and valid_pw(name, pw, u.pw_hash):
             return u

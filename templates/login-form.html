@@ -1,43 +1,97 @@
-{% extends "base.html" %}
 
-{% block content %}
-  <article>
-    <h2>Login</h2>
-    <form method="post">
-      <table>
-        <tr>
-          <td class="label">
-            Username
-          </td>
-          <td>
-            <input type="text" name="username" value="{{username}}">
-          </td>
-        </tr>
+<script>
 
-        <tr>
-          <td class="label">
-            Password
-          </td>
-          <td>
-            <input type="password" name="password" value="">
-          </td>
-        </tr>
+(function($) {
+$.fn.serializefiles = function() {
+    var obj = $(this);
+    /* ADD FILE TO PARAM AJAX */
+    var formData = new FormData();
+    $.each($(obj).find("input[type='file']"), function(i, tag) {
+        $.each($(tag)[0].files, function(i, file) {
+            formData.append(tag.name, file);
+            //alert('added:' + tag.name + '[' + file + ']');
+        });
+    });
+    var params = $(obj).serializeArray();
+    $.each(params, function (i, val) {
+        formData.append(val.name, val.value);
+    });
+    return formData;
+};
+})(jQuery);
 
-        <tr>
-          <td class="label">
-            Remember me
-          </td>
-          <td>
-            <input type="checkbox" name="remember">
-          </td>
-        </tr>
-      </table>
 
-      <div class="error">
-        {{error}}
-      </div>
+$(function(){
+      $("#ioffer_login").click(function(e) {
 
-      <input type="submit">
-    </form>
-  </article>
-{% endblock %}
+
+        var dataf = $("#login-form").serializefiles();
+
+         $.ajax({
+          type: "POST",
+          url: "/ioffer/login",
+          cache: false,
+          contentType: false,
+          processData: false,
+          data: dataf, 
+          success: function(data) {
+                //alert(data);
+            if (data.indexOf("hubo_error") >= 0) {
+                $('#divlogin').html(data);
+            }
+            else {
+                $( "#effect-login:visible" ).removeAttr( "style" ).fadeOut(); $('#toggler-login').css('display', 'none');
+                location.reload();
+                /*$('#divmain').html(data);*/
+            }
+            
+            
+          },
+          error: function() {
+
+            $('#divlogin').html('There was an error');
+          }
+         });
+      });
+  });
+
+</script>
+
+
+<section class="col-md-12">
+            <form id="login-form">
+
+              <fieldset>
+              <legend>iOffer Login</legend>
+
+                <p class="form-row form-row-first">
+                    <label for="username" class="login-label">Username or email <span class="required">*</span>
+                    </label>
+                    <input type="text" id="username" name="username" >
+                </p>
+                <p class="form-row form-row-last">
+                    <label for="password" class="login-label">Password <span class="required">*</span>
+                    </label>
+                    <input type="password" id="password" name="password" >
+                </p>
+                <section class="clear"></section>
+
+                {% if error %}
+
+                    <section class="error">{{ error }}</section>
+
+                {% endif %}
+
+                <p class="form-row">
+                    <input id="ioffer_login" type="miboton" value="Login" name="login">
+                    <label class="inline" for="remember"><input type="checkbox" value="forever" id="remember" name="remember"> Remember me </label>
+                </p>
+                <p class="lost_password">
+                    <a href="#">Lost your password?</a>
+                </p>
+
+                <section class="clear"></section>
+                </fieldset>
+            </form>
+
+</section>

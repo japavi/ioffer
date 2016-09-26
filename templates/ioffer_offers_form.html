@@ -1,0 +1,129 @@
+
+<script>
+$(function(){
+            $('#updateoffer').click(function(event) {
+                
+               var dataString = 'user='+ $('#user').val() + '&offerid=' + $('#offerid').val();  
+               
+               $.ajax({
+                type: "POST",
+                url: "/ioffer/show_add_offer",
+                data: dataString, 
+                success: function(data) {
+                    $('#divoffer').html(data);
+                },
+                error: function() {
+                    $('#divoffer').html('There was an error');
+                }
+               });
+            });
+        })
+</script>
+
+<form id="offer_form_edit">
+  <h3 class="ui-widget-header-offers-form ui-corner-all">{{ offer.offer_tittle }}</h3>
+              
+              <p >
+    
+
+     <!-- <article id="article-offer" class="article_offer"> -->
+
+     <fieldset>
+              <legend>Offer Data:</legend>
+
+      
+      <input type="hidden" id="user" name="user" value="{{ offer.username }}">
+      <input type="hidden" id="offerid" name="offerid" value="{{ offer.key().id() }}">
+    
+
+      
+
+      
+
+      <div id="clear"></div>
+
+      <div id="descuento_offer_form">
+      <label id="lbl_offer_before"><del>{{"{:,.2f}".format(offer.offer_before|float / 1000000)+'M' if offer.offer_before|float > 1000000 else "{:,.2f}".format(offer.offer_before|float / 1000)+'K' if offer.offer_before|float > 1000 else "{:,.2f}".format(offer.offer_before|float)}}&nbsp;{{offer.offer_currency or ''}}</del></label>&nbsp;&nbsp;&nbsp;&nbsp;
+      <label id="lbl_offer_desc">{{ "{:,.0f}".format((100 - offer.offer_after|float * 100 / offer.offer_before|float)|round) if offer.offer_before and offer.offer_after else '0'}}%</label>&nbsp;&nbsp;&nbsp;&nbsp;
+      <label id="lbl_offer_after">{{"{:,.2f}".format(offer.offer_after|float / 1000000)+'M' if offer.offer_after|float > 1000000 else "{:,.2f}".format(offer.offer_after|float / 1000)+'K' if offer.offer_after|float > 1000 else "{:,.2f}".format(offer.offer_after|float)}}&nbsp;{{offer.offer_currency or ''}}</label>
+     </div>
+
+
+      <div id="clear"></div>
+
+      <label class="profile-edit-label"><i>Category:</i></label><label class="profile-edit-data-label">&nbsp;{{ categories[offer.offer_category] }}</label>
+
+      <div id="clear"></div>
+
+      <div id="cabron_offer_from" class="cabron_offer_from">
+      <label class="profile-edit-label"><i>Date Created:</i></label><label class="profile-edit-data-label">&nbsp;{{ offer.offer_created.strftime('%Y-%m-%d %H:%M:%S') }}</label>
+      </div>
+
+      <div id="hijoputa_offer_from" class="hijoputa_offer_from">
+      <label class="profile-edit-label"><i>Date Last Modification:</i></label><label class="profile-edit-data-label">&nbsp;{{ offer.offer_last_modified.strftime('%Y-%m-%d %H:%M:%S') }}</label>
+      </div>
+
+      <div id="clear"></div>
+
+      <div id="cabron_offer_from" class="cabron_offer_from">
+      <label class="profile-edit-label"><i>From:</i></label><label class="profile-edit-data-label">&nbsp;{{offer.offer_start_date}}</label>
+      </div>
+
+      <div id="hijoputa_offer_from" class="hijoputa_offer_from">
+      <label class="profile-edit-label"><i>To:</i></label><label class="profile-edit-data-label">&nbsp;{{offer.offer_end_date}}</label>
+      </div>
+
+      <div id="clear"></div>
+
+
+
+      <label class="profile-edit-label"><i>Short Description:</i></label><label class="profile-edit-data-label">&nbsp;{{offer.offer_short_desc}}</label>
+
+      <label class="profile-edit-label"><i>Description:</i></label><label class="profile-edit-data-label">&nbsp;{{offer.offer_desc}}</label>
+
+      
+
+      <!-- <label class="profile-edit-label"><i>Price Before:</i></label><label class="profile-edit-data-label">&nbsp;{{offer.offer_before}}</label>
+
+      <label class="profile-edit-label"><i>Price After:</i></label><label class="profile-edit-data-label">&nbsp;{{offer.offer_after}}</label>
+
+      <label class="profile-edit-label"><i>Currency:</i></label><label class="profile-edit-data-label">&nbsp;{{offer.offer_currency}}</label> -->
+
+      <div id="clear"></div>
+
+      
+      {% if offer.images.count() > 0 %}
+      <fieldset>
+              <legend>Offer Images:</legend>
+
+      {% for img in offer.images %}
+              
+
+            <figure  class="fig_modify_offer">
+                <img alt="test" src="/ioffer/images/{{ img.key().id() }}" style="width: 100px; height: 100px"/> 
+
+                <figcaption class="figcap_modify_offer">{{img.image_file_name}} </figcaption>
+              </figure>
+
+               {% endfor %}
+
+      </fieldset>
+      {% endif %}
+
+               <div id="clear"></div>
+
+      <label class="profile-edit-label"><i>Conditions:</i></label><label class="profile-edit-data-label">&nbsp;{{offer.offer_conditions}}</label>
+
+
+    </fieldset>
+
+    
+  <!-- </article> -->
+
+    
+<div class="buttonHolder">
+    <input type="button" id="updateoffer" value="Modify">
+  </div>
+
+</p>
+</form>

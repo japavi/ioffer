@@ -1,0 +1,99 @@
+<!-- <script src="https://code.jquery.com/jquery-3.1.0.js"></script> -->
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
+<div class="slider-area">
+
+    <div class="slider-autoplay">
+        {% for offer in last_10_offers %}
+
+       
+            
+                <!-- <div class="col-md-4 col-sm-14"> -->
+                    <div class="blog-post">
+                        <div class="blog-thumb">
+                            <img alt="img_cat" src="/static/img/{{ offer.offer_category }}.jpg"/> 
+                        </div>
+                        <a id="link_show_offer{{ offer.key().id() }}" >
+                        <div class="blog-content">
+                            <div class="content-show">
+                                 <script>
+
+                                      $( function() {
+                                        $( document ).ready(function() {
+                                        // run the currently selected effect
+                                        function runEffect{{ offer.key().id() }}() {
+                                          // get effect type from
+                                          var selectedEffect = "clip";
+                                     
+                                          // Most effect types need no options passed by default
+                                          var options = {};
+                                     
+                                          // Run the effect
+                                          $('#toggler').css('display', 'block');
+                                          $('#toggler').css('height', '100%');
+                                          $( "#effect" ).show( selectedEffect, options, 500, callback{{ offer.key().id() }} );
+                                          //alert($('#toggler').css());
+                                        };
+
+                                            //callback function to bring a hidden box back
+                                        function callback{{ offer.key().id() }}() {
+                                          /*setTimeout(function() {
+                                            $( "#effect:visible" ).removeAttr( "style" ).fadeOut(); $('#toggler').css('display', 'none');
+                                              }, 20000 );*/
+                                            };
+                                         
+                                            // Set effect from select menu value
+                                        $( "#link_show_offer{{ offer.key().id() }}" ).on( "click", function() {
+                                          
+                                          var dataString = 'user='+ $('#username').val();  
+
+                                          offsetY = window.pageYOffset;
+                                           // Block scrolling
+                                          
+
+                                          $('body').css({
+                                             
+                                                  /*'color': '#FFFF00',
+                                                  'backgroundColor': '#00D',*/
+                                                  'top': -offsetY + 'px'
+                                          });
+                                                   
+                                          //alert('link_offer{{ offer.key().id() }}' + link_offer{{ offer.key().id() }});
+                                          $.ajax({
+                                            type: "GET",
+                                            url: "/ioffer/offer_show/" + {{ offer.key().id() }},
+                                            data: dataString, 
+                                            success: function(data) {
+                                              $('body').toggleClass("bodyfix");
+                                              $('#divoffer').html(data);
+                                            },
+                                            error: function() {
+                                              $('#divoffer').html('There was an error');
+                                            }
+                                          });
+                                          runEffect{{ offer.key().id() }}();
+                                        });
+                                            
+                                        $( "#effect" ).hide();
+
+                                      });
+});
+
+                                    </script>
+                                <h4>{{ offer.offer_tittle | title }}</h4>
+                                
+                                <span>[{{ offer.profile.city }} - {{ offer.profile.country }}]</span>
+                            </div>
+                            <div class="content-hide">
+                                <p>{{ offer.profile.name }}</p>
+                                <p>Until&nbsp;{{ offer.offer_end_date.strftime('%Y-%m-%d') }}</p>
+                            </div>
+                        </div>
+                        </a>
+                    </div>
+                <!-- </div> -->
+            
+        {% endfor %}
+    </div>
+</div>

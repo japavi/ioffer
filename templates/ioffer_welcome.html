@@ -1,0 +1,33 @@
+{% extends "base_ioffer.html" %}
+
+{% block content %}
+	
+    <section class="info-wrapper">
+    	<section id="tab-central0" class="w3-container w3-center w3-content" >
+              <h2 class="w3-wide">Welcome to iOffer</h2>
+              <p class="w3-opacity"><i>We love offers!!! Estas en {{ geo_params['client_ciudad'] }}, {{ geo_params['client_pais'] }}, {{ geo_params['client_ip'] }}</i></p>
+              <!-- <p class="w3-justify">Welcome to iOffer, the place where you can start to publish offers, or you can spot published offers near you.</p>
+              <p class="w3-justify">Create your profile if you want to start publishing new offers, or, if you are just looking for amazing offers near your location or wherever you want, just start searching. It's so easy!</p> -->
+
+              
+
+              <section id="offerslist">
+              </section>
+              <div id='loadingmessage' style='display:none'>
+                <img src='/static/img/InternetSlowdown_Day.gif' style="width:100px;height:100px;"/>
+              </div>
+
+        </section>
+        <section id="tab-central1" class="w3-container w3-center w3-content">
+              
+        </section>
+        <section id="tab-central2" class="w3-container w3-center w3-content">
+              
+        </section>
+        <section id="tab-central3" class="w3-container w3-center w3-content">
+              
+        </section>
+    </section>
+
+
+{% endblock %}

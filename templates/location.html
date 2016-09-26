@@ -1,0 +1,262 @@
+<fieldset>
+                        <legend>Location:</legend>
+
+                        <p></p>
+                        <input type="hidden" id="geo_pt" name="geo_pt" class="input-text" value="{{ params['geo_pt'] }}">
+
+<script>
+$(function(){
+      $('#location').blur(function(event) {
+             
+
+             var country = $('#location').val();
+                            /*alert(country);*/
+                            var geocoder = new google.maps.Geocoder();
+
+                          geocoder.geocode( {'address' : country}, function(results, status) {
+                            if (status == google.maps.GeocoderStatus.OK) {
+                                map.setCenter(results[0].geometry.location);
+                                map.setZoom(17);
+                            }
+                          });
+
+
+
+
+          });
+      })
+</script>
+ <label class="profile-label" for="location"><i>Type in your location: </i>
+                        </label>
+<input type="text" id="location" name="location" class="input-text" placeholder="Location" value="">
+
+<section id="googleMap"></section>
+
+                        
+
+                        <script>
+
+                         var init_lan = 0.0;
+                         var init_long = 0.0;
+                         var init_zoom = 2;
+
+                         if ($('#geo_pt').val() != "") {
+                            var sinit_lan = $('#geo_pt').val().split(',')[0];
+                            var sinit_long = $('#geo_pt').val().split(',')[1];
+                            console.log(sinit_lan +","+ sinit_long);
+                            init_lan = Number(sinit_lan);
+                            init_long = Number(sinit_long);
+                            init_zoom = 12;
+
+                          }
+
+
+                          console.log(init_lan +","+ init_long);
+                          function initMap() {
+                            map = new google.maps.Map(document.getElementById('googleMap'), {
+                              center: new google.maps.LatLng(init_lan, init_long),
+                              zoom: init_zoom
+                            });
+
+                            geocoder = new google.maps.Geocoder();
+                            infowindow = new google.maps.InfoWindow;
+
+                            if ($('#geo_pt').val() != "")
+                            {
+                                
+                                marker = null;
+                                addmarker(new google.maps.LatLng(init_lan,init_long));
+                                geocodeLatLng(geocoder, map, infowindow);
+                            }
+
+                            /*var country = $('#countries option:selected').text();*/
+                            
+
+                              /*geocoder.geocode( {'address' : country}, function(results, status) {
+                                if (status == google.maps.GeocoderStatus.OK) {
+                                    map.setCenter(results[0].geometry.location);
+                                }
+                              });*/
+
+
+                        
+
+
+                          //Add listener
+                                map.addListener("dblclick", function (event) {
+
+                                    var latitude = event.latLng.lat();
+                                    var longitude = event.latLng.lng();
+                                    //console.log( latitude + ', ' + longitude );
+
+                                    $('#geo_pt').val(latitude + ', ' + longitude);
+
+                                    /*radius = new google.maps.Circle({map: map,
+                                        radius: 100,
+                                        center: event.latLng,
+                                        fillColor: '#777',
+                                        fillOpacity: 0.1,
+                                        strokeColor: '#AA0000',
+                                        strokeOpacity: 0.8,
+                                        strokeWeight: 2,
+                                        draggable: true,    // Dragable
+                                        editable: true,     // Resizable
+                                        map: map
+                                    });*/
+
+                                    // Center of map
+                                    
+
+                                    addmarker(new google.maps.LatLng(latitude,longitude));
+
+                                    geocodeLatLng(geocoder, map, infowindow);
+
+
+                                }); //end addListener
+
+                                /*map.addListener("mousemove", function (event) {
+
+                                    var latitude = event.latLng.lat();
+                                    var longitude = event.latLng.lng();
+                                    console.log( latitude + ', ' + longitude );
+                                    $('#geo_pt').val(latitude + ', ' + longitude);
+
+
+                                }); //end addListener*/
+
+
+                          }
+
+                          function addmarker(latilongi) {
+                            if (!marker) {
+                                marker = new google.maps.Marker({
+                                    position: latilongi,
+                                    title: 'new marker',
+                                    draggable: true,
+                                    map: map
+                                });
+                            
+                            } else {
+                                marker.setPosition(latilongi);
+                            }
+                            /*map.panTo(latilongi);*/
+                            map.setCenter(marker.getPosition());
+
+
+                            
+
+                            /*attachSecretMessage(marker, "Here is " + $('#name').val());*/
+
+                            marker.addListener("drag", function (event) {
+
+                                   
+                                    var latitude = event.latLng.lat();
+                                    var longitude = event.latLng.lng();
+                                    //console.log( latitude + ', ' + longitude );
+
+                                    $('#geo_pt').val(latitude + ', ' + longitude);
+
+
+                            });
+
+                            marker.addListener("dragend", function (event) {
+
+                                    geocodeLatLng(geocoder, map, infowindow);
+
+                            });
+
+
+
+                        }
+
+                        /*function attachSecretMessage(marker, secretMessage) {
+                          /*infowindow = new google.maps.InfoWindow({
+                            content: secretMessage
+                          });*/
+
+                          /*infowindow.setContent(secretMessage);
+
+                          marker.addListener('click', function() {
+                            infowindow.open(marker.get('map'), marker);
+                          });
+                        }*/
+
+
+                        function geocodeLatLng(geocoder, map, infowindow) {
+                            var input = document.getElementById('geo_pt').value;
+                            var latlngStr = input.split(',', 2);
+                            var latlng = {lat: parseFloat(latlngStr[0]), lng: parseFloat(latlngStr[1])};
+                            geocoder.geocode({'location': latlng}, function(results, status) {
+                              if (status === 'OK') {
+                                map.setCenter(results[0].geometry.location);
+
+                                if (results[1]) {
+                                  //map.setZoom(11);
+                                  /*var marker = new google.maps.Marker({
+                                    position: latlng,
+                                    map: map
+                                  });*/
+                                  infowindow.setContent(results[0].formatted_address);
+                                  results.forEach( function (arrayItem)
+                                    {
+                                        var x = arrayItem.formatted_address;
+                                        console.log(x);
+                                        
+                                    });
+
+                                  $('#country').val(results[results.length - 1].formatted_address);
+
+                                  $('#city').val(results[results.length - 3].formatted_address.split(',')[0]);
+
+
+                                  var partsOfStr = results[0].formatted_address.split(',');
+
+                                  //$('#country').val(partsOfStr[partsOfStr.length - 1]);
+                                  $('#region').val(partsOfStr[partsOfStr.length - 2]);
+                                  /*$('#city').val(partsOfStr[partsOfStr.length - 3]);*/
+                                  $('#street_address').val(partsOfStr[0]);
+
+                                  $('#address_line_2').val(results[1].formatted_address.split(',')[0]);
+
+                                  
+
+                                  $('#location').val(results[0].formatted_address);
+                                  
+                                  infowindow.open(map, marker);
+                                } else {
+                                  window.alert('No results found');
+                                }
+                              } else {
+                                window.alert('Geocoder failed due to: ' + status);
+                              }
+                            });
+                          }
+
+
+
+
+
+                          
+
+
+                        </script>
+                        
+
+                        <script>
+                            jQuery(function(){
+                            if(!window.google||!window.google.maps){
+                              var script = document.createElement('script');
+                                script.type = 'text/javascript';
+                                script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyAg6YwpJokKDu1rxFIxQC-zrRRRScJwkWY&' +
+                                    'callback=initMap';
+                                script.async = true;
+                                script.defer = true;
+                                document.body.appendChild(script);
+                            }
+                            else{
+                              initMap();
+                            }});
+                            </script>
+        
+
+                        </fieldset>

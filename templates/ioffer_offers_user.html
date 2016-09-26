@@ -1,0 +1,130 @@
+<script>
+
+
+
+$(function(){
+      $( document ).ready(function() {
+
+        {% if offer_added %} /*Viene de agregar offer asi que muestra la tercera pestania*/
+          $('#puboffers').addClass('active');
+          $('.info-wrapper section').hide();
+          $('#tab-central3').show();
+          $('#menu-div ul li').removeClass('active');
+          $('#puboffers').addClass('active');
+            $('.block article').hide();
+            var activeTab = $('#puboffers').find('a').attr('href');
+            $(activeTab).show();
+            var dataString = 'username='+ '{{ user.name }}';  
+            //alert('A mostrar la tab divtab3'+ dataString);
+               $.ajax({
+                type: "POST",
+                  url: "/ioffer/offers_user_display",
+                  data: dataString, 
+                  success: function(data) {
+                      $('#tab-central3').html(data);
+                  },
+                  error: function() {
+                      $('#tab-central3').html('There was an error');
+                  }
+               });
+        {% endif %}
+            });
+      })
+
+</script>
+
+<div id="offer_form">
+<h2 class="w3-wide">These are all your published offers</h2>
+              
+              <p class="w3-justify">
+
+{% for offer in offers_user %}
+
+<script>
+
+  $( function() {
+    // run the currently selected effect
+    function runEffect{{ offer.key().id() }}() {
+      // get effect type from
+      var selectedEffect = "clip";
+ 
+      // Most effect types need no options passed by default
+      var options = {};
+ 
+      // Run the effect
+      $('#toggler').css('display', 'block');
+      $('#toggler').css('height', '100%');
+      $( "#effect" ).show( selectedEffect, options, 500, callback{{ offer.key().id() }} );
+      //alert($('#toggler').css());
+    };
+
+        //callback function to bring a hidden box back
+    function callback{{ offer.key().id() }}() {
+      /*setTimeout(function() {
+        $( "#effect:visible" ).removeAttr( "style" ).fadeOut(); $('#toggler').css('display', 'none');
+          }, 20000 );*/
+        };
+     
+        // Set effect from select menu value
+    $( "#link_offer{{ offer.key().id() }}" ).on( "click", function() {
+          //alert('tu madre');
+      var dataString = 'user='+ $('#username').val();  
+               
+      //alert('link_offer{{ offer.key().id() }}' + link_offer{{ offer.key().id() }});
+      $.ajax({
+        type: "GET",
+        url: "/ioffer/offer/" + {{ offer.key().id() }},
+        data: dataString, 
+        success: function(data) {
+          $('#divoffer').html(data);
+        },
+        error: function() {
+          $('#divoffer').html('There was an error');
+        }
+      });
+      runEffect{{ offer.key().id() }}();
+    });
+        
+    $( "#effect" ).hide();
+
+  });
+
+</script>
+<div id="erestontooque"> <!-- dejalo puesto este div pq si no, no se pq, el primer link no va, el resto si va -->
+<a id="link_offer{{ offer.key().id() }}" class="offer-link">
+
+  <article id="article-offer" class="article_offer">
+
+    <div class="blog-thumb-left">
+        <img alt="img_cat" src="/static/img/{{ offer.offer_category }}.jpg"/> 
+    </div>
+
+     <div class="article_offer_right">
+
+     <h3 class="ui-widget-header ui-corner-all">{{ offer.offer_tittle|title }}</h3>
+
+     <!-- <label class="offer-label"><i>Starting Date:</i>&nbsp; {{offer.offer_start_date}}</label>
+
+     <label class="offer-label"><i>Ending Date:</i>&nbsp; {{offer.offer_end_date}}</label> -->
+
+     <div id="loc"><img id="img_loc" alt="loc" src="/static/img/location_marker_pin-512.png"/>{{ offer.profile.city + ' - ' + offer.profile.country if (offer.profile.city + ' - ' + offer.profile.country) | length < 30 else  (offer.profile.city + ' - ' + offer.profile.country)[:30] + '...'}}
+     </div>
+     <div id="descuento">
+      <label id="lbl_offer_before"><del>{{"{:,.2f}".format(offer.offer_before|float / 1000000)+'M' if offer.offer_before|float > 1000000 else "{:,.2f}".format(offer.offer_before|float / 1000)+'K' if offer.offer_before|float > 1000 else "{:,.2f}".format(offer.offer_before|float)}}&nbsp;{{offer.offer_currency or ''}}</del></label>&nbsp;&nbsp;&nbsp;&nbsp;
+      <label id="lbl_offer_desc">{{ "{:,.0f}".format((100 - offer.offer_after|float * 100 / offer.offer_before|float)|round) if offer.offer_before and offer.offer_after else '0'}}%</label>&nbsp;&nbsp;&nbsp;&nbsp;
+      <label id="lbl_offer_after">{{"{:,.2f}".format(offer.offer_after|float / 1000000)+'M' if offer.offer_after|float > 1000000 else "{:,.2f}".format(offer.offer_after|float / 1000)+'K' if offer.offer_after|float > 1000 else "{:,.2f}".format(offer.offer_after|float)}}&nbsp;{{offer.offer_currency or ''}}</label>
+     </div>
+
+     </div>
+
+     <div id="clear"></div>
+
+
+    
+    </article>
+  
+</a>
+</div>
+{% endfor %}
+</p>
+</div>

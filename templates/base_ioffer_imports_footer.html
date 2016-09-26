@@ -1,0 +1,265 @@
+<!-- jQuery sticky menu -->
+<!-- <script src="/static/js/owl.carousel.min.js"></script>
+<script src="/static/js/jquery.sticky.js"></script> -->
+
+
+<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+
+<!-- Bootstrap JS form CDN -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+<!-- Main Script -->
+<script src="/static/js/main.js"></script>
+
+<!-- Slider -->
+<!-- <script type="text/javascript" src="/static/js/bxslider.min.js"></script>
+<script type="text/javascript" src="/static/js/script.slider.js"></script> -->
+
+<script type="text/javascript" src="/static/slick/slick.js"></script>
+
+
+<script>
+
+
+$(document).ready(function(){
+
+  
+        {% if user %}
+
+          /*$("#menu-div ul").prepend('<li><a href="shop.html">Profile</a></li>');*/
+          
+          $('<li id="puboffers"><a href="#tab-central3">Published Offers</a></li>').insertAfter('#menu-div ul>li:first');
+          $('<li id="addoffer"><a href="#tab-central2">Add Offer</a></li>').insertAfter('#menu-div ul>li:first');
+          $('<li id="profile"><a href="#tab-central1" data-toggle="collapse" data-target=".navbar-collapse">Profile</a></li>').insertAfter('#menu-div ul>li:first');
+
+        
+
+        {% endif %}
+
+  $('.slider-autoplay').slick({
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 4000,
+  });
+
+  $(function(){
+    $('.info-wrapper section').hide();
+    $('.info-wrapper section:first').show();
+    $('#menu-div ul li').on('click',function(){
+      $('.info-wrapper section').hide();
+      var activeTab = $(this).find('a').attr('href');
+      $(activeTab).show();
+      return false;
+    });
+  })
+
+  $(function(){
+      $('#profile').click(function(event) {
+             var dataString = 'user='+ '{{ user.name }}';  
+             $.ajax({
+                type: "POST",
+                url: "/ioffer/show_profile",
+                data:  dataString, 
+                success: function(data) {
+                    $('#tab-central1').html(data);
+                },
+                error: function() {
+                    $('#tab-central1').html('There was an error');
+                }
+             });
+          });
+      })
+
+  $(function(){
+      $('#addoffer').click(function(event) {
+             var dataString = 'user='+ '{{ user.name }}';  
+             $.ajax({
+                type: "POST",
+                url: "/ioffer/show_add_offer",
+                data:  dataString, 
+                success: function(data) {
+                    $('#tab-central2').html(data);
+                },
+                error: function() {
+                    $('#tab-central2').html('There was an error');
+                }
+             });
+          });
+      })
+
+  $(function(){
+          $('#puboffers').click(function(event) {
+             var dataString = 'username='+ '{{ user.name }}';  
+             $.ajax({
+              type: "POST",
+                url: "/ioffer/offers_user_display",
+                data: dataString, 
+                success: function(data) {
+                    $('#tab-central3').html(data);
+                },
+                error: function() {
+                    $('#tab-central3').html('There was an error');
+                }
+             });
+          });
+    })
+
+
+
+
+
+
+  $("div.blog-post").hover(
+    function() {
+        $(this).find(".content-hide").slideToggle("fast");
+    },
+    function() {
+        $(this).find(".content-hide").slideToggle("fast");
+    }
+  );
+
+    //tu puta madre en el iphone no se oculta
+    $('.hover').bind('touchstart touchend', function(e) {
+        e.preventDefault();
+        $(this).find(".content-hide").slideToggle("fast");
+    });
+
+
+
+        
+  $( function() {
+    // run the currently selected effect
+    function runEffect() {
+      // get effect type from
+      var selectedEffect = "clip";
+ 
+      // Most effect types need no options passed by default
+      var options = {};
+ 
+      // Run the effect
+      $('#toggler-login').css('display', 'block');
+      $('#toggler-login').css('height', '100%');
+      $("#effect-login").show( selectedEffect, options, 500, callback);
+      $('html, body').css({'overflow': 'hidden','height': '100%'});
+    };
+
+        //callback function to bring a hidden box back
+    function callback() {
+      /*setTimeout(function() {
+        $( "#effect:visible" ).removeAttr( "style" ).fadeOut(); $('#toggler').css('display', 'none');
+          }, 20000 );*/
+        };
+     
+        // Set effect from select menu value
+    $( "#showlogin" ).on( "click", function() {
+          //alert('tu madre');
+               runEffect();
+      $.ajax({
+        type: "POST",
+        url: "/ioffer/login_show",
+        data: "", 
+        success: function(data) {
+          $('#divlogin').html(data);
+        },
+        error: function() {
+          $('#divlogin').html('There was an error');
+        }
+      });
+      
+    });
+        
+    $( "#effect" ).hide();
+
+  });
+
+$(function(){
+            $('#close-login').click(function(event) {
+              $( "#effect-login:visible" ).removeAttr( "style" ).fadeOut(); $('#toggler-login').css('display', 'none');
+              $('html, body').css({'overflow': 'auto','height': 'auto'});
+            });
+          });
+
+
+
+$( function() {
+    // run the currently selected effect
+    function runEffectSignup() {
+      // get effect type from
+      var selectedEffect = "clip";
+ 
+      // Most effect types need no options passed by default
+      var options = {};
+ 
+      // Run the effect
+      $('#toggler-signup').css('display', 'block');
+      $('#toggler-signup').css('height', '100%');
+      $("#effect-signup").show( selectedEffect, options, 500, callbacksignup);
+      $('html, body').css({'overflow': 'hidden','height': '100%'});
+    };
+
+        //callback function to bring a hidden box back
+    function callbacksignup() {
+      /*setTimeout(function() {
+        $( "#effect:visible" ).removeAttr( "style" ).fadeOut(); $('#toggler').css('display', 'none');
+          }, 20000 );*/
+        };
+     
+        // Set effect from select menu value
+    $( "#showsignup" ).on( "click", function() {
+          //alert('tu madre');
+               runEffectSignup();
+      $.ajax({
+        type: "GET",
+        url: "/ioffer/signup",
+        data: "", 
+        success: function(data) {
+          $('#divsignup').html(data);
+        },
+        error: function() {
+          $('#divsignup').html('There was an error');
+        }
+      });
+      
+    });
+        
+    $( "#effect" ).hide();
+
+  });
+
+$(function(){
+            $('#close-signup').click(function(event) {
+              $( "#effect-signup:visible" ).removeAttr( "style" ).fadeOut(); $('#toggler-signup').css('display', 'none');
+              $('html, body').css({'overflow': 'auto','height': 'auto'});
+            });
+          });
+
+$(function(){
+            $('#close-offer').click(function(event) {
+              $( "#effect:visible" ).removeAttr( "style" ).fadeOut(); $('#toggler').css('display', 'none');
+              $('body').removeClass("bodyfix");
+              $('html, body').css({'overflow': 'auto','height': 'auto', 'position': 'static'});
+              $(window).scrollTop(offsetY);
+            });
+          });
+
+
+
+
+
+
+
+
+
+
+}); /*end doc ready*/
+
+
+
+
+
+
+</script>
+
+
+
