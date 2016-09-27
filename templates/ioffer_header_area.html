@@ -9,8 +9,12 @@
                         <li><a href="cart.html"><i class="fa fa-user"></i> My Cart</a></li> -->
                         
                         {% if user %}
-                            <li>Welcome&nbsp;{{user.name}}</li>
-                            <li><a href="/ioffer/logout">(logout)</a></li>
+                            {% if user.name %}
+                                <li>Welcome&nbsp;{{user.name}}</li>
+                            {% else %}
+                                <li>Welcome&nbsp;{{user}}</li>
+                            {% endif %}
+                            <li id="logout"><a href="#" >(logout)</a></li>
                         {% else %}
                         <li id="showsignup"><a href="#"><i class="fa fa-user"></i>Sign up</a></li>
                         <li id="showlogin"><a href="#"><i class="fa fa-user"></i>Login</a></li>

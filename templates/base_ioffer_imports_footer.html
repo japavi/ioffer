@@ -210,8 +210,8 @@ $( function() {
           //alert('tu madre');
                runEffectSignup();
       $.ajax({
-        type: "GET",
-        url: "/ioffer/signup",
+        type: "POST",
+        url: "/ioffer/signup_show",
         data: "", 
         success: function(data) {
           $('#divsignup').html(data);
@@ -246,7 +246,11 @@ $(function(){
 
 
 
-
+$( "#logout" ).on( "click", function() {
+          //alert('tu madre');
+               firebase.auth().signOut();
+               window.location.href = "/ioffer/logout";
+             });
 
 
 

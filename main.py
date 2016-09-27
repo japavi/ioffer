@@ -63,13 +63,13 @@ def render_str(template, **params):
 
 
 def loged_user(logged_username, update = False):
-    key = 'loged_user' + logged_username
+    key = 'loged_user' + str(logged_username)
     user = memcache.get(key)
     if user is None or update:
         logging.error('DB QUERY user')
         memcache.delete(key)
 
-        user = User.by_name(logged_username)
+        user = User.by_name(str(logged_username))
         memcache.set(key, user)
         #logging.error('memcache 1 [%s]:%s' % (key,memcache.get(key).name))
         logging.error('memcache.get(key).profiles.count:%s' % memcache.get(key).profiles.count())
@@ -198,6 +198,8 @@ class BaseHandler(webapp2.RequestHandler):
     def login(self, user, remember):
         self.set_secure_cookie('user_id', str(user.key().id()), remember)
 
+    
+
     def logout(self):
         self.response.headers.add_header('Set-Cookie', 'user_id=; Path=/')
 
@@ -247,11 +249,11 @@ class BaseHandler(webapp2.RequestHandler):
             logging.error('oferta:%s; fecha_fin:%s' % (offer.offer_tittle, str(offer.offer_end_date)))
         return last_10_offers
 
-    
+class Signup_IOffer_Show(BaseHandler):
+    def post(self):
+        self.render('ioffer_signup_form.html')    
 
 class Signup(BaseHandler):
-    def get(self):
-        self.render("ioffer_signup_form.html")
 
     def post(self):
         have_error = False
@@ -311,24 +313,69 @@ class Login_IOffer(BaseHandler):
         password = self.request.get('password')
         remember = self.request.get('remember')
 
+        token = self.request.get('token')
+        providerId = self.request.get('providerId')
+        uid = self.request.get('uid')
+        displayName = self.request.get('displayName')
+        email = self.request.get('email')
+        photoURL = self.request.get('photoURL')
+
         logging.error("username:%s" % username)
         logging.error("password:%s" % password)
+
+        logging.error("token:%s" % token)
+        logging.error("displayName:%s" % displayName)
+
 
         rem = False
 
         if remember and remember == 'on':
             rem = True
 
-        user = User.login(username, password)
-        logging.error("user:%s" % user)
-        if user:
-            self.login(user, rem)
-            loged_user(username)
-            self.redirect('/ioffer/welcome')
+        if (token != ""):
+            user=displayName
+            userexists = User.by_name(user)
+
+            if not userexists:
+
+                logging.error("el usuario %s no existe. Se procede a darle de alta." % user)
+
+                u = None;
+
+
+                try:
+                    u = User.register(str(displayName), "xxx%s" % user, email)
+                    u.put()
+                except:
+                    logging.error("Error al dar de alta al usuario %s" % user)
+
+                userexists = u
+                logging.error("userlogged:%s" % str(userexists.key().id()))
+                logging.error("userlogged:%s" % userexists.name)
+
+                self.login(userexists, rem)
+                #loged_user(userexists.name)
+                self.redirect('/ioffer/welcome')
+
+            else:
+
+                self.login(userexists, rem)
+                loged_user(userexists.name)
+                self.redirect('/ioffer/welcome')
+                #self.render('ioffer_welcome.html', user = displayName, categories = categories, countries = countries, last_10_offers = self.get_last_10_offers(), geo_params = self.get_geo_params())
+
         else:
-            logging.error("login error")
-            msg = 'Invalid login'
-            self.render('login-form.html', error = msg)
+
+            user = User.login(username, password)
+            logging.error("user:%s" % user)
+            if user:
+                self.login(user, rem)
+                loged_user(username)
+                self.redirect('/ioffer/welcome')
+            else:
+                logging.error("login error")
+                msg = 'Invalid login'
+                self.render('login-form.html', error = msg)
 
 class Logout(BaseHandler):
     def get(self):
@@ -362,15 +409,15 @@ class Welcome(BaseHandler):
                 if profile:
 
                     if offer_added:
-                        self.render('welcome.html', user = u, profile = profile, categories = categories, offer_added = True, last_10_offers = self.get_last_10_offers())
+                        self.render('ioffer_welcome.html', user = u, profile = profile, categories = categories, offer_added = True, last_10_offers = self.get_last_10_offers())
                     else:
                         self.render('ioffer_welcome.html', user = u, profile = profile, categories = categories, countries = countries, last_10_offers = self.get_last_10_offers(), geo_params = self.get_geo_params())
                 else:
-                    self.render('welcome.html', user = u, last_10_offers = self.get_last_10_offers(), categories = categories)
+                    self.render('ioffer_welcome.html', user = u, last_10_offers = self.get_last_10_offers(), categories = categories, geo_params = self.get_geo_params())
             
             else:
                 error_username = 'There was an error with user %s' % logged_username
-                self.render('welcome.html', user = u, error_username = error_username, last_10_offers = self.get_last_10_offers(), categories = categories)
+                self.render('ioffer_welcome.html', user = u, error_username = error_username, last_10_offers = self.get_last_10_offers(), categories = categories, geo_params = self.get_geo_params())
             
 class Init(BaseHandler):
     def get(self):
@@ -910,6 +957,7 @@ app = webapp2.WSGIApplication([
     ('/', Init),
     ('/rest/.*', rest.Dispatcher),
     ('/ioffer/signup', Register),
+    ('/ioffer/signup_show', Signup_IOffer_Show),
     ('/ioffer/login', Login_IOffer),
     ('/ioffer/login_show', Login_IOffer_Show),
     ('/ioffer/logout', Logout),

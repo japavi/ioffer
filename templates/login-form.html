@@ -14,6 +14,7 @@ $.fn.serializefiles = function() {
     });
     var params = $(obj).serializeArray();
     $.each(params, function (i, val) {
+        
         formData.append(val.name, val.value);
     });
     return formData;
@@ -55,7 +56,107 @@ $(function(){
       });
   });
 
+  var loginGoogle = document.getElementById("my-signin2");
+
+  loginGoogle.addEventListener("click", mostrarLoginGoogle, false);
+  loginGoogle.addEventListener("touchstart", mostrarLoginGoogle, false);
+
+  function mostrarLoginGoogle(){
+
+
+    firebase.auth().signInWithPopup(provider).then(function(result) {
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      var token = result.credential.accessToken;
+      // The signed-in user info.
+      var user = result.user;
+
+      console.log("user: "+user);
+       console.log("token: "+token);
+
+        var userloged = firebase.auth().currentUser;
+
+        if (userloged != null) {
+          userloged.providerData.forEach(function (profile) {
+            console.log("Sign-in provider: "+profile.providerId);
+            console.log("  Provider-specific UID: "+profile.uid);
+            console.log("  Name: "+profile.displayName);
+            console.log("  Email: "+profile.email);
+            console.log("  Photo URL: "+profile.photoURL);
+
+            $('#token').val(token);
+            $('#providerId').val(profile.providerId);
+            $('#uid').val(profile.uid);
+            $('#displayName').val(profile.displayName);
+            $('#email').val(profile.email);
+            $('#photoURL').val(profile.photoURL);
+
+            var dataf = $("#login-form").serializefiles();
+
+         $.ajax({
+          type: "POST",
+          url: "/ioffer/login",
+          cache: false,
+          contentType: false,
+          processData: false,
+          data: dataf, 
+          success: function(data) {
+                //alert(data);
+            if (data.indexOf("hubo_error") >= 0) {
+                $('#divlogin').html(data);
+            }
+            else {
+                $( "#effect-login:visible" ).removeAttr( "style" ).fadeOut(); $('#toggler-login').css('display', 'none');
+                location.reload();
+                
+            }
+            
+            
+          },
+          error: function() {
+
+            $('#divlogin').html('There was an error');
+          }
+         });
+
+
+
+          });
+        }
+
+        
+
+
+      // ...
+    }).catch(function(error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // The email of the user's account used.
+      var email = error.email;
+      // The firebase.auth.AuthCredential type that was used.
+      var credential = error.credential;
+
+       console.log("errorCode: "+errorCode);
+       console.log("errorMessage: "+errorMessage);
+
+     
+
+      // ...
+    });
+
+
+
+  }
+
+
+
+
 </script>
+
+
+
+  
+
 
 
 <section class="col-md-12">
@@ -82,9 +183,41 @@ $(function(){
 
                 {% endif %}
 
+                
+
                 <p class="form-row">
                     <input id="ioffer_login" type="miboton" value="Login" name="login">
                     <label class="inline" for="remember"><input type="checkbox" value="forever" id="remember" name="remember"> Remember me </label>
+                </p>
+                <p class="form-row form-row-last">
+                   <!--  <label id="loginGoogle">Login with Google 
+                    </label>  -->
+
+                    <div class="buttonHolder">
+                      <div id="my-signin2">
+
+
+                        <p><a class="btn-auth btn-google" href="#button">Sign in with <b>Google</b></a></p>
+                         <p><a class="btn-auth btn-facebook" href="#button">Sign in with <b>Facebook</b></a></p>
+                          <p><button class="btn-auth btn-twitter">Sign in with <b>Twitter</b></button></p>
+                          <!-- <p><button class="btn-auth btn-github">Sign in with <b>GitHub</b></button></p>
+                          <p><a class="btn-auth btn-yahoo" href="#button">Sign in with <b>Yahoo!</b></a></p>
+                          <p><a class="btn-auth btn-windows" href="#button">Sign in with <b>Windows Live ID</b></a></p>
+                      <p><a class="btn-auth btn-openid" href="#button">Sign in with <b>OpenID</b></a></p> -->
+
+
+
+                      </div>
+                    </div>
+
+                    
+                    <input type="hidden" id="token" name="token"/>
+                    <input type="hidden" id="providerId" name="providerId"/>
+                    <input type="hidden" id="uid" name="uid"/>
+                    <input type="hidden" id="displayName" name="displayName"/>
+                    <input type="hidden" id="email" name="email"/>
+                    <input type="hidden" id="photoURL" name="photoURL"/>
+                   
                 </p>
                 <p class="lost_password">
                     <a href="#">Lost your password?</a>

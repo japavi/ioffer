@@ -17,7 +17,8 @@ class User(db.Model):
 
     @classmethod
     def by_name(cls, name):
-        u = User.all().filter('name =', name).get()
+        u = User.all().filter('name =', str(name)).get()
+        logging.error('u by_name: %s' % u)
         return u
 
     @classmethod

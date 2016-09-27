@@ -1,0 +1,10 @@
+<fieldset>
+    <legend>Profile Type:</legend>
+{% for ptype in profile_types %}
+    <label for="profile_type" class="label-radio">
+    <input type="radio" id="profile_type" name="profile_type" value="{{ ptype }}" {% if params['profile_type'] == ptype or params['default_selected_type'] == ptype %} checked {% endif %} > 
+   
+
+    <span><i>{{ profile_types[ptype] }}</i></span></label>
+{% endfor %}
+</fieldset>
